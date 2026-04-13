@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrainerDex - Entrenamiento Competitivo Pokémon</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/themes.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="pokeball-icon">⚡</span>
+                    TrainerDex
+                </h1>
+                <p class="app-subtitle">Herramienta de entrenamiento competitivo para Pokémon Scarlet & Violet</p>
+            </div>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </header>
+
+        <main class="app-main">
+            <aside class="sidebar">
+                <div class="search-section">
+                    <form id="search-form" class="search-form">
+                        <div class="search-input-group">
+                            <input 
+                                type="text" 
+                                id="pokemon-search" 
+                                class="search-input" 
+                                placeholder="Buscar Pokémon..." 
+                                autocomplete="off"
+                                required
+                            >
+                            <button type="submit" class="search-button">
+                                <span class="search-icon">🔍</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="recent-searches" class="recent-searches hidden">
+                    <h3 class="section-title">Búsquedas recientes</h3>
+                    <ul id="recent-list" class="recent-list"></ul>
+                </div>
+
+                <div id="training-config" class="training-config hidden">
+                    <h3 class="section-title">Configurar entrenamiento</h3>
+                    <div id="stats-inputs" class="stats-inputs"></div>
+                    <div class="ev-summary">
+                        <span>EVs restantes: </span>
+                        <span id="ev-remaining">510</span>
+                        <span>/ 510</span>
+                    </div>
+                    <button id="generate-plan" class="btn btn-primary" disabled>
+                        Generar plan de entrenamiento
+                    </button>
+                </div>
+            </aside>
+
+            <section class="content">
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Cargando...</p>
+                </div>
+
+                <div id="error-message" class="error-message hidden">
+                    <p class="error-text"></p>
+                    <button id="retry-btn" class="btn btn-secondary">Reintentar</button>
+                </div>
+
+                <div id="pokemon-card" class="pokemon-card hidden">
+                    <div class="pokemon-header">
+                        <div class="pokemon-info">
+                            <h2 id="pokemon-name" class="pokemon-name"></h2>
+                            <div id="pokemon-types" class="pokemon-types"></div>
+                        </div>
+                        <img id="pokemon-sprite" class="pokemon-sprite" alt="">
+                    </div>
+
+                    <div class="pokemon-stats-section">
+                        <div class="stats-container">
+                            <h3 class="section-subtitle">Stats base</h3>
+                            <div id="base-stats" class="stats-list"></div>
+                        </div>
+
+                        <div class="ev-yield-container">
+                            <h3 class="section-subtitle">EV Yield</h3>
+                            <div id="ev-yield" class="ev-yield-list"></div>
+                            <p class="ev-explanation">
+                                Los EVs que otorga este Pokémon al ser derrotado
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="nature-section" class="nature-section hidden">
+                        <h3 class="section-subtitle">Naturaleza recomendada</h3>
+                        <div id="recommended-nature" class="nature-card"></div>
+                    </div>
+
+                    <div id="training-plan" class="training-plan hidden">
+                        <h3 class="section-subtitle">Plan de entrenamiento</h3>
+                        <div id="plan-steps" class="plan-steps"></div>
+                    </div>
+
+                    <div id="reset-section" class="reset-section hidden">
+                        <h3 class="section-subtitle">Reset de EVs</h3>
+                        <div id="reset-info" class="reset-info"></div>
+                    </div>
+                </div>
+
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-icon">🎮</div>
+                    <h2>Bienvenido a TrainerDex</h2>
+                    <p>Busca un Pokémon para comenzar tu entrenamiento competitivo</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Data files first (constants) -->
+    <script src="assets/js/data/natures.js"></script>
+    <script src="assets/js/data/items.js"></script>
+    <script src="assets/js/data/locations-sv.js"></script>
+    
+    <!-- Utils -->
+    <script src="assets/js/utils/helpers.js"></script>
+    <script src="assets/js/utils/calculator.js"></script>
+    <script src="assets/js/utils/trainer.js"></script>
+    
+    <!-- API -->
+    <script src="assets/js/api/pokeapi.js"></script>
+    <script src="assets/js/api/cache.js"></script>
+    
+    <!-- App -->
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

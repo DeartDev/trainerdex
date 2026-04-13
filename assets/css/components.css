@@ -1,0 +1,330 @@
+.pokemon-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pokemon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pokemon-info {
+    flex: 1;
+}
+
+.pokemon-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: capitalize;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-types {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.type-badge {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.type-badge.normal { background: var(--type-normal); }
+.type-badge.fire { background: var(--type-fire); }
+.type-badge.water { background: var(--type-water); }
+.type-badge.electric { background: var(--type-electric); }
+.type-badge.grass { background: var(--type-grass); }
+.type-badge.ice { background: var(--type-ice); }
+.type-badge.fighting { background: var(--type-fighting); }
+.type-badge.poison { background: var(--type-poison); }
+.type-badge.ground { background: var(--type-ground); }
+.type-badge.flying { background: var(--type-flying); }
+.type-badge.psychic { background: var(--type-psychic); }
+.type-badge.bug { background: var(--type-bug); }
+.type-badge.rock { background: var(--type-rock); }
+.type-badge.ghost { background: var(--type-ghost); }
+.type-badge.dragon { background: var(--type-dragon); }
+.type-badge.dark { background: var(--type-dark); }
+.type-badge.steel { background: var(--type-steel); }
+.type-badge.fairy { background: var(--type-fairy); }
+
+.pokemon-sprite {
+    width: 120px;
+    height: 120px;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.3));
+}
+
+.pokemon-stats-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 600px) {
+    .pokemon-stats-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.stat-name {
+    width: 80px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.stat-bar-container {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stat-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.stat-value {
+    width: 40px;
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ev-yield-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ev-yield-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.ev-yield-item:hover {
+    transform: translateX(5px);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.ev-yield-item.active {
+    border-left: 3px solid var(--primary);
+}
+
+.ev-stat-name {
+    width: 80px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.ev-yield-value {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.ev-yield-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.ev-explanation {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.nature-card {
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 2px solid var(--secondary);
+}
+
+.nature-info {
+    flex: 1;
+}
+
+.nature-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.nature-effects {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.nature-effect {
+    font-size: 0.9rem;
+}
+
+.nature-effect.positive {
+    color: var(--success);
+}
+
+.nature-effect.negative {
+    color: var(--danger);
+}
+
+.nature-icon {
+    font-size: 2.5rem;
+}
+
+.training-plan {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.plan-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.plan-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.plan-step:hover {
+    transform: translateX(5px);
+    background: rgba(78, 205, 196, 0.1);
+}
+
+.step-icon {
+    font-size: 1.5rem;
+    min-width: 30px;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.step-detail {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.step-stat {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.reset-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.reset-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.reset-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.reset-icon {
+    font-size: 1.5rem;
+}
+
+.reset-text {
+    flex: 1;
+}
+
+.reset-stat {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.reset-amount {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}

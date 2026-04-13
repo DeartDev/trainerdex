@@ -1,0 +1,95 @@
+:root {
+    --primary: #ff6b6b;
+    --secondary: #4ecdc4;
+    --accent: #ffe66d;
+    --success: #51cf66;
+    --warning: #fcc419;
+    --danger: #ff6b6b;
+    
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --bg-card: #1f2937;
+    
+    --text-primary: #f8f9fa;
+    --text-secondary: #adb5bd;
+    --text-muted: #6c757d;
+    
+    --border-color: #2d3748;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    
+    --type-normal: #A8A878;
+    --type-fire: #F08030;
+    --type-water: #6890F0;
+    --type-electric: #F8D030;
+    --type-grass: #78C850;
+    --type-ice: #98D8D8;
+    --type-fighting: #C03028;
+    --type-poison: #A040A0;
+    --type-ground: #E0C068;
+    --type-flying: #A890F0;
+    --type-psychic: #F85888;
+    --type-bug: #A8B820;
+    --type-rock: #B8A038;
+    --type-ghost: #705898;
+    --type-dragon: #7038F8;
+    --type-dark: #705848;
+    --type-steel: #B8B8D0;
+    --type-fairy: #EE99AC;
+}
+
+[data-theme="light"] {
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #e9ecef;
+    --bg-tertiary: #dee2e6;
+    --bg-card: #ffffff;
+    
+    --text-primary: #212529;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
+    
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .pokemon-sprite {
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.1));
+}
+
+[data-theme="light"] .stat-bar {
+    background: #e9ecef;
+}
+
+[data-theme="light"] .ev-yield-item {
+    background: #e9ecef;
+}
+
+[data-theme="light"] .btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+[data-theme="light"] .sidebar {
+    background: #ffffff;
+    border-right: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .app-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .search-input {
+    background: #f8f9fa;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="light"] .search-input::placeholder {
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .pokemon-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+}
