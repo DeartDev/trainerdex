@@ -264,8 +264,9 @@ const App = {
         });
 
         this.renderNatureRecommendation(plan.nature);
-        this.renderTrainingPlan(plan);
+        this.renderDetailedTrainingPlan(plan);
         this.renderResetInfo(plan.reset);
+        this.renderSummary(plan.summary);
     },
 
     renderNatureRecommendation(nature) {
@@ -288,15 +289,19 @@ const App = {
                         <span class="nature-effect positive">↑ ${nature.statPlus}</span>
                         <span class="nature-effect negative">↓ ${nature.statMinus}</span>
                     </div>
+                    <div class="nature-instructions">
+                        <span class="instruction-label">Cómo cambiar:</span>
+                        <span class="instruction-text">Usa Menta ${nature.name} en PC (₽1,000) - Casual Branch Mesagoza</span>
+                    </div>
                 </div>
             </div>
         `;
     },
 
-    renderTrainingPlan(plan) {
+    renderDetailedTrainingPlan(plan) {
         const section = document.getElementById('training-plan');
         
-        if (plan.steps.length === 0) {
+        if (plan.detailedSteps.length === 0) {
             Helpers.hideElement(section);
             return;
         }
@@ -304,15 +309,222 @@ const App = {
         Helpers.showElement(section);
 
         const container = document.getElementById('plan-steps');
-        container.innerHTML = plan.steps.map(step => `
-            <div class="plan-step">
-                <span class="step-icon">${step.icon}</span>
-                <div class="step-content">
-                    <div class="step-title">${step.title}</div>
-                    <div class="step-detail">${step.detail}</div>
+        container.innerHTML = '';
+
+        plan.detailedSteps.forEach(step => {
+            const stepEl = document.createElement('div');
+            stepEl.className = 'detailed-step';
+            
+            if (step.type === 'reset') {
+                stepEl.innerHTML = this.renderResetStep(step);
+            } else if (step.type === 'powerItems') {
+                stepEl.innerHTML = this.renderPowerItemsStep(step);
+            } else if (step.type === 'vitamins') {
+                stepEl.innerHTML = this.renderVitaminsStep(step);
+            } else if (step.type === 'training') {
+                stepEl.innerHTML = this.renderTrainingStep(step);
+            } else if (step.type === 'nature') {
+                stepEl.innerHTML = this.renderNatureStep(step);
+            }
+
+            container.appendChild(stepEl);
+        });
+    },
+
+    renderResetStep(step) {
+        return `
+            <div class="step-section reset-section-style">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                </div>
+                <p class="step-description">${step.description}</p>
+                <div class="step-items">
+                    ${step.items.map(item => `
+                        <div class="detail-item">
+                            <span class="item-stat">${item.stat}</span>
+                            <span class="item-detail">${item.berries}x ${item.berryName}</span>
+                            <span class="item-note">${item.note}</span>
+                            <span class="item-locations">📍 ${item.locations}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="step-total">Total: ${step.totalBerries} berries necesarias</div>
+            </div>
+        `;
+    },
+
+    renderPowerItemsStep(step) {
+        return `
+            <div class="step-section power-items-style">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                </div>
+                <p class="step-description">${step.description}</p>
+                <div class="step-items">
+                    ${step.items.map(item => `
+                        <div class="detail-item">
+                            <span class="item-stat">${item.stat}</span>
+                            <span class="item-name">${item.name}</span>
+                            <span class="item-bonus">${item.bonus}</span>
+                            <span class="item-price">💰 ₽${item.price.toLocaleString()}</span>
+                            <span class="item-locations">📍 ${item.locations}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="step-tip">💡 ${step.tip}</div>
+            </div>
+        `;
+    },
+
+    renderVitaminsStep(step) {
+        return `
+            <div class="step-section vitamins-style">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                </div>
+                <p class="step-description">${step.description}</p>
+                <div class="step-items">
+                    ${step.items.map(item => `
+                        <div class="detail-item">
+                            <span class="item-stat">${item.stat}</span>
+                            <span class="item-name">${item.count}x ${item.vitaminName}</span>
+                            <span class="item-ev">+${item.evTotal} EVs</span>
+                            <span class="item-price">💰 ₽${item.totalCost.toLocaleString()}</span>
+                            <span class="item-locations">📍 ${item.locations}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="step-tip">💡 ${step.tip}</div>
+                <div class="step-total">Costo total: ₽${step.totalCost.toLocaleString()}</div>
+            </div>
+        `;
+    },
+
+    renderTrainingStep(step) {
+        return `
+            <div class="step-section training-style">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                </div>
+                <p class="step-description">${step.description}</p>
+                ${step.items.map(item => `
+                    <div class="training-stat-section">
+                        <div class="training-stat-header">
+                            <span class="stat-badge">${item.stat}</span>
+                            <span class="target-evs">Objetivo: ${item.targetEvs} EVs</span>
+                        </div>
+                        
+                        <div class="battles-info">
+                            <span class="battles-count">⚔️ ${item.battlesNeeded} batallas</span>
+                            <span class="ev-per-battle">(${item.evPerBattle} EVs/batalla)</span>
+                        </div>
+                        
+                        <div class="best-location">
+                            <span class="location-label">📍 Mejor ubicación:</span>
+                            <span class="location-name">${item.bestLocation?.location}</span>
+                            <span class="location-area">(${item.bestLocation?.area})</span>
+                        </div>
+                        
+                        <div class="pokemon-options">
+                            <span class="options-label">Pokémon disponibles:</span>
+                            <div class="pokemon-list">
+                                ${item.pokemonOptions.map(p => `
+                                    <span class="pokemon-option">
+                                        ${p.name} (+${p.ev}) - ${p.level}
+                                    </span>
+                                `).join(', ')}
+                            </div>
+                        </div>
+                        
+                        ${item.sandwichRecipe ? `
+                            <div class="sandwich-recommendation">
+                                <span class="sandwich-icon">🥪</span>
+                                <span class="sandwich-name">${item.sandwichRecipe.name}</span>
+                                <span class="sandwich-effect">${item.sandwichRecipe.effect}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+                <div class="step-tip">💡 ${step.tip}</div>
+            </div>
+        `;
+    },
+
+    renderNatureStep(step) {
+        return `
+            <div class="step-section nature-style">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                </div>
+                
+                <div class="nature-info-detailed">
+                    <div class="nature-main">
+                        <span class="nature-name-large">${step.natureName}</span>
+                        <span class="nature-effects">
+                            <span class="positive">↑ ${step.statPlus}</span>
+                            <span class="negative">↓ ${step.statMinus}</span>
+                        </span>
+                    </div>
+                    
+                    <div class="how-to-change">
+                        <span class="how-to-title">🔧 Cómo cambiar la naturaleza:</span>
+                        <span class="how-to-text">${step.howToUse}</span>
+                    </div>
+                    
+                    <div class="mint-info">
+                        <span class="mint-name">${step.mintName}</span>
+                        <span class="mint-price">💰 ₽${step.mintPrice.toLocaleString()}</span>
+                        <span class="mint-location">📍 ${step.mintLocation}</span>
+                    </div>
+                    
+                    <div class="nature-note">💡 ${step.note}</div>
                 </div>
             </div>
-        `).join('');
+        `;
+    },
+
+    renderSummary(summary) {
+        const summaryEl = document.getElementById('training-summary');
+        if (!summaryEl) return;
+
+        if (summary.totalEvs === 0) {
+            Helpers.hideElement(summaryEl);
+            return;
+        }
+
+        Helpers.showElement(summaryEl);
+        summaryEl.innerHTML = `
+            <div class="summary-card">
+                <h3 class="summary-title">📊 Resumen del Entrenamiento</h3>
+                <div class="summary-stats">
+                    <div class="summary-item">
+                        <span class="summary-icon">💊</span>
+                        <span class="summary-label">Vitaminas:</span>
+                        <span class="summary-value">${summary.vitamins}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-icon">⚔️</span>
+                        <span class="summary-label">Batallas:</span>
+                        <span class="summary-value">${summary.battles}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-icon">💰</span>
+                        <span class="summary-label">Costo estimado:</span>
+                        <span class="summary-value">₽${summary.totalCost.toLocaleString()}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-icon">⚡</span>
+                        <span class="summary-label">EVs totales:</span>
+                        <span class="summary-value">${summary.totalEvs}/510</span>
+                    </div>
+                </div>
+            </div>
+        `;
     },
 
     renderResetInfo(reset) {

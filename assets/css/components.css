@@ -328,3 +328,383 @@
     font-size: 0.9rem;
     color: var(--text-secondary);
 }
+
+.detailed-step {
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.step-section {
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border-left: 4px solid var(--primary);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.step-icon {
+    font-size: 1.5rem;
+}
+
+.step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.step-description {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.step-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+}
+
+.item-stat {
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 80px;
+}
+
+.item-name, .item-detail {
+    color: var(--text-primary);
+}
+
+.item-bonus, .item-ev {
+    color: var(--success);
+    font-size: 0.85rem;
+}
+
+.item-price, .item-locations {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.item-note {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.step-tip {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(78, 205, 196, 0.1);
+    border-radius: 8px;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.step-total {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--accent);
+    text-align: center;
+}
+
+.training-stat-section {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.training-stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.stat-badge {
+    background: var(--primary);
+    color: white;
+    padding: 0.3rem 0.75rem;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.target-evs {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.battles-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.battles-count {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.ev-per-battle {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.best-location {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+}
+
+.location-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.location-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.location-area {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.pokemon-options {
+    margin-bottom: 0.75rem;
+}
+
+.options-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.pokemon-option {
+    background: var(--bg-secondary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.sandwich-recommendation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+}
+
+.sandwich-icon {
+    font-size: 1.2rem;
+}
+
+.sandwich-name {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.sandwich-effect {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.nature-instructions {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.instruction-label {
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.instruction-text {
+    color: var(--secondary);
+}
+
+.nature-info-detailed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.nature-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+}
+
+.nature-name-large {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.nature-effects {
+    display: flex;
+    gap: 1rem;
+}
+
+.nature-effects .positive {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.nature-effects .negative {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.how-to-change {
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+}
+
+.how-to-title {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.how-to-text {
+    color: var(--text-secondary);
+}
+
+.mint-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(255, 230, 109, 0.1), rgba(255, 107, 107, 0.1));
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+}
+
+.mint-name {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.mint-price {
+    color: var(--text-secondary);
+}
+
+.mint-location {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.nature-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.summary-card {
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    border: 2px solid var(--secondary);
+}
+
+.summary-title {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+}
+
+.summary-icon {
+    font-size: 1.2rem;
+}
+
+.summary-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.summary-value {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-left: auto;
+}
+
+@media (max-width: 600px) {
+    .summary-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .nature-main {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

@@ -10,7 +10,10 @@ const Trainer = {
             pokemonToFight: {},
             nature: null,
             steps: [],
-            warnings: []
+            detailedSteps: [],
+            warnings: [],
+            targetStats: { ...targetStats },
+            summary: {}
         };
 
         const currentEvs = {
@@ -38,7 +41,10 @@ const Trainer = {
             if (usePowerItem && evYield > 0) {
                 const powerItem = POWER_ITEM_STATS[stat] ? ITEMS.powerItems[POWER_ITEM_STATS[stat]] : null;
                 if (powerItem) {
-                    plan.items.push(powerItem);
+                    const existingIndex = plan.items.findIndex(i => i.stat === stat);
+                    if (existingIndex === -1) {
+                        plan.items.push(powerItem);
+                    }
                 }
             }
 
@@ -61,13 +67,17 @@ const Trainer = {
                     plan.pokemonToFight[stat] = {
                         pokemon: location.pokemon,
                         location: location.location,
-                        evYield: location.ev
+                        evYield: location.ev,
+                        level: location.level,
+                        sandwich: location.sandwich
                     };
                 }
             }
         });
 
         plan.steps = this.generateSteps(plan);
+        plan.detailedSteps = this.generateDetailedSteps(plan);
+        plan.summary = this.getTrainingSummary(plan);
 
         return plan;
     },
@@ -123,8 +133,8 @@ const Trainer = {
         if (plan.items.length > 0) {
             steps.push({
                 icon: '🎒',
-                title: 'Equipar objetos',
-                detail: plan.items.map(i => i.name).join(', ')
+                title: 'Objetos de Poder',
+                detail: plan.items.map(i => `${i.name} (+${i.evBonus} ${STAT_NAMES_ES[i.stat]}/KO)`).join(', ')
             });
         }
 
@@ -136,7 +146,7 @@ const Trainer = {
             
             steps.push({
                 icon: '💊',
-                title: 'Usar vitaminas',
+                title: 'Vitaminas',
                 detail: vitaminDetails.join(', ')
             });
         }
@@ -144,12 +154,12 @@ const Trainer = {
         if (Object.keys(plan.battles).length > 0) {
             const battleDetails = Object.entries(plan.battles).map(([stat, count]) => {
                 const pokemonInfo = plan.pokemonToFight[stat];
-                return `${count}x contra ${pokemonInfo?.pokemon || 'Pokémon'} (${STAT_NAMES_ES[stat]})`;
+                return `${count}x vs ${pokemonInfo?.pokemon || 'Pokémon'} (${STAT_NAMES_ES[stat]})`;
             });
 
             steps.push({
                 icon: '⚔️',
-                title: 'Derrotar Pokémon',
+                title: 'Batallas',
                 detail: battleDetails.join(', ')
             });
         }
@@ -157,7 +167,7 @@ const Trainer = {
         if (plan.nature) {
             steps.push({
                 icon: '🌿',
-                title: 'Naturaleza recomendada',
+                title: 'Naturaleza',
                 detail: `${plan.nature.name} (+${plan.nature.statPlus} / -${plan.nature.statMinus})`
             });
         }
@@ -165,16 +175,91 @@ const Trainer = {
         return steps;
     },
 
+    generateDetailedSteps(plan) {
+        const detailedSteps = [];
+
+        if (plan.reset.length > 0) {
+            const resetInfo = Instructions.getResetInstructions(plan.reset);
+            if (resetInfo) {
+                detailedSteps.push({
+                    type: 'reset',
+                    ...resetInfo
+                });
+            }
+        }
+
+        if (plan.items.length > 0) {
+            const powerInfo = Instructions.getPowerItemInstructions(plan.items);
+            if (powerInfo) {
+                detailedSteps.push({
+                    type: 'powerItems',
+                    ...powerInfo
+                });
+            }
+        }
+
+        if (Object.keys(plan.vitamins).length > 0) {
+            const vitaminInfo = Instructions.getVitaminInstructions(plan.vitamins);
+            if (vitaminInfo) {
+                detailedSteps.push({
+                    type: 'vitamins',
+                    ...vitaminInfo
+                });
+            }
+        }
+
+        if (Object.keys(plan.battles).length > 0) {
+            const trainingInfo = Instructions.getTrainingInstructions(
+                plan.battles, 
+                plan.pokemonToFight, 
+                plan.targetStats
+            );
+            if (trainingInfo) {
+                detailedSteps.push({
+                    type: 'training',
+                    ...trainingInfo
+                });
+            }
+        }
+
+        if (plan.nature) {
+            const natureInfo = Instructions.getNatureInstructions(plan.nature);
+            if (natureInfo) {
+                detailedSteps.push({
+                    type: 'nature',
+                    ...natureInfo
+                });
+            }
+        }
+
+        return detailedSteps;
+    },
+
     getTrainingSummary(plan) {
         let totalVitamins = 0;
         let totalBattles = 0;
+        let totalCost = 0;
 
-        Object.values(plan.vitamins).forEach(v => totalVitamins += v);
-        Object.values(plan.battles).forEach(b => totalBattles += b);
+        Object.values(plan.vitamins || {}).forEach(v => totalVitamins += v);
+        Object.values(plan.battles || {}).forEach(b => totalBattles += b);
+
+        Object.values(plan.vitamins || {}).forEach((count, stat) => {
+            const vitaminKey = VITAMIN_STATS[stat];
+            const vitamin = ITEMS.vitamins[vitaminKey];
+            if (vitamin) totalCost += count * vitamin.cost;
+        });
+
+        (plan.items || []).forEach(item => {
+            totalCost += item.cost;
+        });
+
+        const totalEvs = Object.values(plan.targetStats || {}).reduce((a, b) => a + b, 0);
 
         return {
             vitamins: totalVitamins,
             battles: totalBattles,
+            totalCost: totalCost,
+            totalEvs: totalEvs,
             hasReset: plan.reset.length > 0,
             hasItems: plan.items.length > 0,
             hasNature: plan.nature !== null
