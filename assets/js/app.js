@@ -418,27 +418,57 @@ const App = {
                             <span class="target-evs">Objetivo: ${item.targetEvs} EVs</span>
                         </div>
                         
-                        <div class="battles-info">
-                            <span class="battles-count">⚔️ ${item.battlesNeeded} batallas</span>
-                            <span class="ev-per-battle">(${item.evPerBattle} EVs/batalla)</span>
+                        <div class="ev-breakdown">
+                            <span class="ev-from-vitamins">💊 Vitamins: +${item.evFromVitamins} EVs</span>
+                            <span class="ev-from-battles">⚔️ Batallas: +${item.remainingEvs} EVs</span>
                         </div>
                         
-                        <div class="best-location">
-                            <span class="location-label">📍 Mejor ubicación:</span>
-                            <span class="location-name">${item.bestLocation?.location}</span>
-                            <span class="location-area">(${item.bestLocation?.area})</span>
+                        ${item.hasPowerItem ? `
+                            <div class="power-item-info">
+                                <span class="power-badge">🎒 Con ${ITEMS.powerItems[POWER_ITEM_STATS[item.statKey]]?.name || 'Power Item'}: +${item.powerBonus} EVs/batalla</span>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="battles-summary">
+                            <span class="battles-total">Total: ${item.totalBattles} batallas necesarias</span>
                         </div>
                         
-                        <div class="pokemon-options">
-                            <span class="options-label">Pokémon disponibles:</span>
-                            <div class="pokemon-list">
-                                ${item.pokemonOptions.map(p => `
-                                    <span class="pokemon-option">
-                                        ${p.name} (+${p.ev}) - ${p.level}
-                                    </span>
-                                `).join(', ')}
+                        <div class="pokemon-section">
+                            <span class="section-label">🐾 Pokémon a derrotar para ${item.stat}:</span>
+                            <div class="pokemon-grid">
+                                ${item.pokemonOptions.map((p, index) => `
+                                    <div class="pokemon-card">
+                                        <div class="pokemon-header-row">
+                                            <span class="pokemon-name">${p.name}</span>
+                                            <span class="pokemon-ev-badge">+${p.evYield} EVs</span>
+                                        </div>
+                                        <div class="pokemon-details">
+                                            <span class="pokemon-battles">⚔️ ${p.battlesNeeded} KOs</span>
+                                            <span class="pokemon-total-ev">(${p.totalEvFromPokemon} EVs gained)</span>
+                                        </div>
+                                        <div class="pokemon-location">
+                                            📍 ${p.location}
+                                        </div>
+                                        <div class="pokemon-level">
+                                            📊 Nivel: ${p.level}
+                                        </div>
+                                        ${p.sandwichName ? `
+                                            <div class="pokemon-sandwich">
+                                                🥪 ${p.sandwichName}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
                             </div>
                         </div>
+                        
+                        ${item.bestLocation ? `
+                            <div class="best-location-info">
+                                <span class="location-title">⭐ Mejor ubicación recomendada:</span>
+                                <span class="location-name">${item.bestLocation.location}</span>
+                                <span class="location-area">(${item.bestLocation.area})</span>
+                            </div>
+                        ` : ''}
                         
                         ${item.sandwichRecipe ? `
                             <div class="sandwich-recommendation">

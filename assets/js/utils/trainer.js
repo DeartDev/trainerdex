@@ -62,15 +62,33 @@ const Trainer = {
             if (calculation.battles > 0) {
                 plan.battles[stat] = calculation.battles;
                 
-                const location = LOCATIONS_SV[stat]?.[0];
-                if (location) {
-                    plan.pokemonToFight[stat] = {
-                        pokemon: location.pokemon,
-                        location: location.location,
-                        evYield: location.ev,
-                        level: location.level,
-                        sandwich: location.sandwich
+                const availablePokemon = LOCATIONS_SV[stat] || [];
+                const topPokemon = availablePokemon.slice(0, 3);
+                
+                const battlesWithPower = calculation.withPowerItem ? 8 : 0;
+                
+                let remainingEvs = target - (calculation.vitaminEvs || 0);
+                const pokemonDetails = topPokemon.map(p => {
+                    const pokemonEv = p.ev + battlesWithPower;
+                    const battlesNeeded = remainingEvs > 0 ? Math.ceil(remainingEvs / pokemonEv) : 0;
+                    const actualBattles = Math.min(battlesNeeded, calculation.battles);
+                    remainingEvs -= actualBattles * pokemonEv;
+                    
+                    return {
+                        name: p.pokemon,
+                        evYield: p.ev,
+                        evPerBattle: pokemonEv,
+                        location: p.location,
+                        level: p.level,
+                        sandwich: p.sandwich,
+                        sandwichName: SANDWICH_RECIPES[p.sandwich]?.name || null,
+                        battlesNeeded: actualBattles,
+                        totalEvFromPokemon: actualBattles * pokemonEv
                     };
+                }).filter(p => p.battlesNeeded > 0);
+
+                if (pokemonDetails.length > 0) {
+                    plan.pokemonToFight[stat] = pokemonDetails;
                 }
             }
         });
@@ -212,7 +230,8 @@ const Trainer = {
             const trainingInfo = Instructions.getTrainingInstructions(
                 plan.battles, 
                 plan.pokemonToFight, 
-                plan.targetStats
+                plan.targetStats,
+                plan.vitamins
             );
             if (trainingInfo) {
                 detailedSteps.push({

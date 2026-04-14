@@ -708,3 +708,189 @@
         gap: 0.5rem;
     }
 }
+
+.training-style .training-stat-section {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.ev-breakdown {
+    display: flex;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.ev-from-vitamins {
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.ev-from-battles {
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.power-item-info {
+    margin-bottom: 0.75rem;
+}
+
+.power-badge {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 230, 109, 0.2));
+    border: 1px solid var(--primary);
+    border-radius: 20px;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.battles-summary {
+    margin: 0.75rem 0;
+    padding: 0.5rem;
+    background: rgba(78, 205, 196, 0.1);
+    border-radius: 6px;
+    text-align: center;
+}
+
+.battles-total {
+    color: var(--secondary);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.pokemon-section {
+    margin-top: 1rem;
+}
+
+.section-label {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.pokemon-card {
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 3px solid var(--primary);
+    transition: all 0.2s ease;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+}
+
+.pokemon-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.pokemon-ev-badge {
+    background: var(--accent);
+    color: var(--dark);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.pokemon-details {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-battles {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.pokemon-total-ev {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.pokemon-location {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.pokemon-level {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.pokemon-sandwich {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+    border-radius: 6px;
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.best-location-info {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, rgba(255, 230, 109, 0.1), rgba(255, 107, 107, 0.1));
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+}
+
+.location-title {
+    display: block;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.location-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.location-area {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+    .pokemon-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ev-breakdown {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

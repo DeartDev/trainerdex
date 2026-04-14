@@ -99,51 +99,43 @@ const Instructions = {
         };
     },
 
-    getTrainingInstructions(battles, pokemonToFight, targetStats) {
+    getTrainingInstructions(battles, pokemonToFight, targetStats, vitamins) {
         if (!battles || Object.keys(battles).length === 0) return null;
 
         const details = [];
 
-        Object.entries(battles).forEach(([stat, count]) => {
-            const pokemonList = LOCATIONS_SV[stat] || [];
+        Object.entries(battles).forEach(([stat, totalBattles]) => {
+            const pokemonList = pokemonToFight[stat] || [];
             const bestLocation = BEST_LOCATIONS[stat];
             const target = targetStats[stat] || 0;
+            const vitaminCount = vitamins[stat] || 0;
+            const evFromVitamins = vitaminCount * 10;
+            const remainingEvs = Math.max(0, target - evFromVitamins);
 
-            const usedEvs = Object.keys(vitamins => {
-                if (vitamins[stat]) return vitamins[stat] * 10;
-                return 0;
-            });
-
-            const evYield = pokemonList[0]?.ev || 1;
-            const evPerBattle = evYield + 8;
-            const remainingAfterVitamins = Math.max(0, target - (Object.values(vitamins || {})[stat] || 0) * 10);
-            const actualBattles = Math.ceil(remainingAfterVitamins / evPerBattle) || count;
-
-            const pokemonOptions = pokemonList.slice(0, 5).map(p => ({
-                name: p.pokemon,
-                ev: p.ev,
-                location: p.location,
-                level: p.level,
-                sandwich: p.sandwich ? SANDWICH_RECIPES[p.sandwich]?.name : null
-            }));
+            const hasPowerItem = ITEMS.powerItems[POWER_ITEM_STATS[stat]] !== undefined;
+            const powerBonus = hasPowerItem ? 8 : 0;
 
             details.push({
                 stat: STAT_NAMES_ES[stat],
+                statKey: stat,
                 targetEvs: target,
-                battlesNeeded: actualBattles,
-                evPerBattle: evPerBattle,
+                evFromVitamins: evFromVitamins,
+                remainingEvs: remainingEvs,
+                totalBattles: totalBattles,
+                hasPowerItem: hasPowerItem,
+                powerBonus: powerBonus,
+                pokemonOptions: pokemonList.slice(0, 3),
                 bestLocation: bestLocation,
-                pokemonOptions: pokemonOptions,
                 sandwich: bestLocation?.sandwich,
                 sandwichRecipe: SANDWICH_RECIPES[bestLocation?.sandwich],
-                tip: `Derrota ${actualBattles} Pokémon dando ${STAT_NAMES_ES[stat]} EVs`
+                tip: `Derrota ${totalBattles} Pokémon dando ${STAT_NAMES_ES[stat]} EVs`
             });
         });
 
         return {
             title: 'Entrenamiento por Batalla',
             icon: '⚔️',
-            description: 'Derrota Pokémon salvajes para ganar EVs:',
+            description: 'Derrota Pokémon salvajes para ganar EVs. Cada stat > 0 requiere battling:',
             items: details,
             tip: 'Usa el sandwich del tipo correspondiente para encontrar más Pokémon del stat'
         };
