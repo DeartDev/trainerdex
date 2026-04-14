@@ -1,67 +1,107 @@
 :root {
-    --primary: #ff6b6b;
-    --secondary: #4ecdc4;
-    --accent: #ffe66d;
-    --success: #51cf66;
-    --warning: #fcc419;
-    --danger: #ff6b6b;
+    /* Primary palette - Dark Mode */
+    --primary: #60A5FA;
+    --secondary: #FDE047;
+    --accent: #FB7185;
     
-    --bg-primary: #1a1a2e;
-    --bg-secondary: #16213e;
-    --bg-tertiary: #0f3460;
-    --bg-card: #1f2937;
+    /* Neutrals */
+    --bg-primary: #0B1120;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1F2937;
+    --bg-card: #1F2937;
+    --border-color: #334155;
     
-    --text-primary: #f8f9fa;
-    --text-secondary: #adb5bd;
-    --text-muted: #6c757d;
+    /* Text */
+    --text-primary: #E5E7EB;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
     
-    --border-color: #2d3748;
+    /* States */
+    --success: #4ADE80;
+    --warning: #FBBF24;
+    --error: #F87171;
+    
+    /* Stat-specific colors */
+    --stat-hp: #4ADE80;
+    --stat-attack: #F87171;
+    --stat-defense: #60A5FA;
+    --stat-sp_atk: #FACC15;
+    --stat-sp_def: #A78BFA;
+    --stat-speed: #FB7185;
+    
+    /* Shadows */
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    
-    --type-normal: #A8A878;
-    --type-fire: #F08030;
-    --type-water: #6890F0;
-    --type-electric: #F8D030;
-    --type-grass: #78C850;
-    --type-ice: #98D8D8;
-    --type-fighting: #C03028;
-    --type-poison: #A040A0;
-    --type-ground: #E0C068;
-    --type-flying: #A890F0;
-    --type-psychic: #F85888;
-    --type-bug: #A8B820;
-    --type-rock: #B8A038;
-    --type-ghost: #705898;
-    --type-dragon: #7038F8;
-    --type-dark: #705848;
-    --type-steel: #B8B8D0;
-    --type-fairy: #EE99AC;
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="light"] {
-    --bg-primary: #f8f9fa;
-    --bg-secondary: #e9ecef;
-    --bg-tertiary: #dee2e6;
-    --bg-card: #ffffff;
+    /* Primary palette - Light Mode */
+    --primary: #3B82F6;
+    --secondary: #FACC15;
+    --accent: #F43F5E;
     
-    --text-primary: #212529;
-    --text-secondary: #495057;
-    --text-muted: #6c757d;
+    /* Neutrals */
+    --bg-primary: #F8FAFC;
+    --bg-secondary: #F1F5F9;
+    --bg-tertiary: #E2E8F0;
+    --bg-card: #FFFFFF;
+    --border-color: #E2E8F0;
     
-    --border-color: #dee2e6;
+    /* Text */
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    
+    /* States */
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --error: #EF4444;
+    
+    /* Stat colors (same in light mode for consistency) */
+    --stat-hp: #22C55E;
+    --stat-attack: #EF4444;
+    --stat-defense: #3B82F6;
+    --stat-sp_atk: #F59E0B;
+    --stat-sp_def: #8B5CF6;
+    --stat-speed: #F43F5E;
+    
+    /* Shadows */
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
 
+/* Type colors - Both themes */
+.type-badge.normal { background: #A8A878; }
+.type-badge.fire { background: #F08030; }
+.type-badge.water { background: #6890F0; }
+.type-badge.electric { background: #F8D030; }
+.type-badge.grass { background: #78C850; }
+.type-badge.ice { background: #98D8D8; }
+.type-badge.fighting { background: #C03028; }
+.type-badge.poison { background: #A040A0; }
+.type-badge.ground { background: #E0C068; }
+.type-badge.flying { background: #A890F0; }
+.type-badge.psychic { background: #F85888; }
+.type-badge.bug { background: #A8B820; }
+.type-badge.rock { background: #B8A038; }
+.type-badge.ghost { background: #705898; }
+.type-badge.dragon { background: #7038F8; }
+.type-badge.dark { background: #705848; }
+.type-badge.steel { background: #B8B8D0; }
+.type-badge.fairy { background: #EE99AC; }
+.type-badge.stellar { background: #FF6B6B; }
+
+/* Light theme adjustments */
 [data-theme="light"] .pokemon-sprite {
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.1));
 }
 
 [data-theme="light"] .stat-bar {
-    background: #e9ecef;
+    background: #CBD5E1;
 }
 
 [data-theme="light"] .ev-yield-item {
-    background: #e9ecef;
+    background: #F1F5F9;
 }
 
 [data-theme="light"] .btn-primary {
@@ -70,17 +110,17 @@
 }
 
 [data-theme="light"] .sidebar {
-    background: #ffffff;
+    background: #FFFFFF;
     border-right: 1px solid var(--border-color);
 }
 
 [data-theme="light"] .app-header {
-    background: #ffffff;
+    background: #FFFFFF;
     border-bottom: 1px solid var(--border-color);
 }
 
 [data-theme="light"] .search-input {
-    background: #f8f9fa;
+    background: #F1F5F9;
     border: 1px solid var(--border-color);
     color: var(--text-primary);
 }
@@ -90,6 +130,6 @@
 }
 
 [data-theme="light"] .pokemon-card {
-    background: #ffffff;
+    background: #FFFFFF;
     border: 1px solid var(--border-color);
 }

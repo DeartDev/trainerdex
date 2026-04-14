@@ -139,7 +139,7 @@ const App = {
             row.innerHTML = `
                 <span class="stat-name">${Helpers.formatStatName(stat)}</span>
                 <div class="stat-bar-container">
-                    <div class="stat-bar" style="width: ${width}%"></div>
+                    <div class="stat-bar" data-stat="${stat}" style="width: ${width}%"></div>
                 </div>
                 <span class="stat-value">${value}</span>
             `;
@@ -155,6 +155,7 @@ const App = {
             const isActive = data.effort > 0;
             const item = document.createElement('div');
             item.className = `ev-yield-item ${isActive ? 'active' : ''}`;
+            item.dataset.stat = stat;
             item.innerHTML = `
                 <span class="ev-stat-name">${Helpers.formatStatName(stat)}</span>
                 <span class="ev-yield-value">+${data.effort}</span>
@@ -186,7 +187,7 @@ const App = {
             const evYieldInfo = evYield > 0 ? ` (+${evYield}/KO)` : '';
 
             group.innerHTML = `
-                <label for="stat-${stat}">${statName}${evYieldInfo}</label>
+                <label for="stat-${stat}" class="stat-label" data-stat="${stat}">${statName}${evYieldInfo}</label>
                 <input 
                     type="number" 
                     id="stat-${stat}" 
@@ -414,7 +415,7 @@ const App = {
                 ${step.items.map(item => `
                     <div class="training-stat-section">
                         <div class="training-stat-header">
-                            <span class="stat-badge">${item.stat}</span>
+                            <span class="stat-badge" data-stat="${item.statKey}">${item.stat}</span>
                             <span class="target-evs">Objetivo: ${item.targetEvs} EVs</span>
                         </div>
                         

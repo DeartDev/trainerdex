@@ -1,9 +1,15 @@
+/* ================================
+   TRAINERDEX COMPONENTS CSS
+   Updated color palette with stat-specific colors
+   ================================ */
+
 .pokemon-card {
     background: var(--bg-card);
     border-radius: 16px;
     padding: 1.5rem;
     box-shadow: var(--shadow);
     animation: fadeIn 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
 @keyframes fadeIn {
@@ -47,30 +53,11 @@
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-.type-badge.normal { background: var(--type-normal); }
-.type-badge.fire { background: var(--type-fire); }
-.type-badge.water { background: var(--type-water); }
-.type-badge.electric { background: var(--type-electric); }
-.type-badge.grass { background: var(--type-grass); }
-.type-badge.ice { background: var(--type-ice); }
-.type-badge.fighting { background: var(--type-fighting); }
-.type-badge.poison { background: var(--type-poison); }
-.type-badge.ground { background: var(--type-ground); }
-.type-badge.flying { background: var(--type-flying); }
-.type-badge.psychic { background: var(--type-psychic); }
-.type-badge.bug { background: var(--type-bug); }
-.type-badge.rock { background: var(--type-rock); }
-.type-badge.ghost { background: var(--type-ghost); }
-.type-badge.dragon { background: var(--type-dragon); }
-.type-badge.dark { background: var(--type-dark); }
-.type-badge.steel { background: var(--type-steel); }
-.type-badge.fairy { background: var(--type-fairy); }
-
 .pokemon-sprite {
     width: 120px;
     height: 120px;
     image-rendering: pixelated;
-    filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.3));
+    filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.4));
 }
 
 .pokemon-stats-section {
@@ -105,6 +92,13 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.stat-row:hover {
+    background: var(--bg-tertiary);
 }
 
 .stat-name {
@@ -125,10 +119,17 @@
 
 .stat-bar {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
     border-radius: 4px;
     transition: width 0.5s ease;
 }
+
+/* Stat-specific colors for bars */
+.stat-bar[data-stat="hp"] { background: linear-gradient(90deg, var(--stat-hp), #86EFAC); }
+.stat-bar[data-stat="attack"] { background: linear-gradient(90deg, var(--stat-attack), #FCA5A5); }
+.stat-bar[data-stat="defense"] { background: linear-gradient(90deg, var(--stat-defense), #93C5FD); }
+.stat-bar[data-stat="sp_atk"] { background: linear-gradient(90deg, var(--stat-sp_atk), #FDE047); }
+.stat-bar[data-stat="sp_def"] { background: linear-gradient(90deg, var(--stat-sp_def), #C4B5FD); }
+.stat-bar[data-stat="speed"] { background: linear-gradient(90deg, var(--stat-speed), #FDA4AF); }
 
 .stat-value {
     width: 40px;
@@ -138,6 +139,7 @@
     color: var(--text-primary);
 }
 
+/* EV Yield Styles */
 .ev-yield-list {
     display: flex;
     flex-direction: column;
@@ -152,16 +154,25 @@
     background: var(--bg-tertiary);
     border-radius: 8px;
     transition: all 0.2s ease;
+    border-left: 3px solid transparent;
 }
 
 .ev-yield-item:hover {
     transform: translateX(5px);
-    background: rgba(255, 107, 107, 0.1);
+    background: rgba(96, 165, 250, 0.1);
+    border-left-color: var(--primary);
 }
 
 .ev-yield-item.active {
-    border-left: 3px solid var(--primary);
+    border-left-color: var(--success);
 }
+
+.ev-yield-item[data-stat="hp"] { border-left-color: var(--stat-hp); }
+.ev-yield-item[data-stat="attack"] { border-left-color: var(--stat-attack); }
+.ev-yield-item[data-stat="defense"] { border-left-color: var(--stat-defense); }
+.ev-yield-item[data-stat="sp_atk"] { border-left-color: var(--stat-sp_atk); }
+.ev-yield-item[data-stat="sp_def"] { border-left-color: var(--stat-sp_def); }
+.ev-yield-item[data-stat="speed"] { border-left-color: var(--stat-speed); }
 
 .ev-stat-name {
     width: 80px;
@@ -172,7 +183,7 @@
 
 .ev-yield-value {
     font-weight: 700;
-    color: var(--accent);
+    color: var(--secondary);
     font-size: 1rem;
 }
 
@@ -189,8 +200,9 @@
     font-style: italic;
 }
 
+/* Nature Card */
 .nature-card {
-    background: var(--bg-tertiary);
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
     border-radius: 12px;
     padding: 1rem;
     display: flex;
@@ -206,7 +218,7 @@
 .nature-name {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--secondary);
     text-transform: uppercase;
 }
 
@@ -225,13 +237,32 @@
 }
 
 .nature-effect.negative {
-    color: var(--danger);
+    color: var(--error);
 }
 
 .nature-icon {
     font-size: 2.5rem;
 }
 
+.nature-instructions {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.instruction-label {
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.instruction-text {
+    color: var(--primary);
+}
+
+/* Training Plan Steps */
 .training-plan {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
@@ -256,7 +287,7 @@
 
 .plan-step:hover {
     transform: translateX(5px);
-    background: rgba(78, 205, 196, 0.1);
+    background: rgba(96, 165, 250, 0.1);
 }
 
 .step-icon {
@@ -290,45 +321,7 @@
     margin-right: 0.5rem;
 }
 
-.reset-section {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.reset-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.reset-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background: var(--bg-tertiary);
-    border-radius: 8px;
-}
-
-.reset-icon {
-    font-size: 1.5rem;
-}
-
-.reset-text {
-    flex: 1;
-}
-
-.reset-stat {
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.reset-amount {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
+/* Detailed Steps */
 .detailed-step {
     margin-bottom: 1.5rem;
     animation: fadeIn 0.3s ease;
@@ -409,9 +402,9 @@
 .step-tip {
     margin-top: 1rem;
     padding: 0.75rem;
-    background: rgba(78, 205, 196, 0.1);
+    background: rgba(96, 165, 250, 0.1);
     border-radius: 8px;
-    color: var(--secondary);
+    color: var(--primary);
     font-size: 0.9rem;
 }
 
@@ -421,15 +414,17 @@
     background: var(--bg-card);
     border-radius: 8px;
     font-weight: 600;
-    color: var(--accent);
+    color: var(--secondary);
     text-align: center;
 }
 
+/* Training Section */
 .training-stat-section {
     background: var(--bg-card);
     border-radius: 10px;
     padding: 1rem;
     margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
 }
 
 .training-stat-header {
@@ -448,42 +443,173 @@
     font-size: 0.9rem;
 }
 
+.stat-badge[data-stat="hp"] { background: var(--stat-hp); }
+.stat-badge[data-stat="attack"] { background: var(--stat-attack); }
+.stat-badge[data-stat="defense"] { background: var(--stat-defense); }
+.stat-badge[data-stat="sp_atk"] { background: var(--stat-sp_atk); }
+.stat-badge[data-stat="sp_def"] { background: var(--stat-sp_def); }
+.stat-badge[data-stat="speed"] { background: var(--stat-speed); }
+
 .target-evs {
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
-.battles-info {
+.ev-breakdown {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-}
-
-.battles-count {
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.ev-per-battle {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-.best-location {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    padding: 0.75rem;
     background: var(--bg-tertiary);
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
-.location-label {
+.ev-from-vitamins {
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+.ev-from-battles {
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.power-item-info {
+    margin-bottom: 0.75rem;
+}
+
+.power-badge {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.2), rgba(253, 224, 71, 0.2));
+    border: 1px solid var(--primary);
+    border-radius: 20px;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.battles-summary {
+    margin: 0.75rem 0;
+    padding: 0.5rem;
+    background: rgba(253, 224, 71, 0.1);
+    border-radius: 6px;
+    text-align: center;
+}
+
+.battles-total {
+    color: var(--secondary);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.pokemon-section {
+    margin-top: 1rem;
+}
+
+.section-label {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.pokemon-card {
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 3px solid var(--primary);
+    transition: all 0.2s ease;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+}
+
+.pokemon-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.pokemon-ev-badge {
+    background: var(--secondary);
+    color: #0F172A;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.pokemon-details {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.pokemon-battles {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.pokemon-total-ev {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.pokemon-location {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.pokemon-level {
     color: var(--text-muted);
     font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.pokemon-sandwich {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(253, 224, 71, 0.1));
+    border-radius: 6px;
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.best-location-info {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, rgba(253, 224, 71, 0.1), rgba(96, 165, 250, 0.1));
+    border-radius: 8px;
+    border: 1px solid var(--secondary);
+}
+
+.location-title {
+    display: block;
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
 }
 
 .location-name {
@@ -496,39 +622,15 @@
     font-size: 0.85rem;
 }
 
-.pokemon-options {
-    margin-bottom: 0.75rem;
-}
-
-.options-label {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.pokemon-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.pokemon-option {
-    background: var(--bg-secondary);
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    color: var(--text-primary);
-}
-
 .sandwich-recommendation {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem;
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(253, 224, 71, 0.1));
     border-radius: 8px;
     border: 1px solid var(--primary);
+    margin-top: 0.75rem;
 }
 
 .sandwich-icon {
@@ -545,24 +647,7 @@
     font-size: 0.85rem;
 }
 
-.nature-instructions {
-    margin-top: 0.75rem;
-    padding: 0.75rem;
-    background: var(--bg-card);
-    border-radius: 8px;
-    font-size: 0.85rem;
-}
-
-.instruction-label {
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 0.25rem;
-}
-
-.instruction-text {
-    color: var(--secondary);
-}
-
+/* Nature Section */
 .nature-info-detailed {
     display: flex;
     flex-direction: column;
@@ -581,7 +666,7 @@
 .nature-name-large {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--secondary);
     text-transform: uppercase;
 }
 
@@ -596,7 +681,7 @@
 }
 
 .nature-effects .negative {
-    color: var(--danger);
+    color: var(--error);
     font-weight: 600;
 }
 
@@ -622,13 +707,13 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: linear-gradient(135deg, rgba(255, 230, 109, 0.1), rgba(255, 107, 107, 0.1));
+    background: linear-gradient(135deg, rgba(253, 224, 71, 0.1), rgba(96, 165, 250, 0.1));
     border-radius: 8px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--secondary);
 }
 
 .mint-name {
-    color: var(--accent);
+    color: var(--secondary);
     font-weight: 700;
 }
 
@@ -647,12 +732,13 @@
     font-style: italic;
 }
 
+/* Summary Card */
 .summary-card {
     background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
     border-radius: 16px;
     padding: 1.5rem;
     margin-top: 1.5rem;
-    border: 2px solid var(--secondary);
+    border: 2px solid var(--primary);
 }
 
 .summary-title {
@@ -693,6 +779,48 @@
     margin-left: auto;
 }
 
+/* Reset Section */
+.reset-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.reset-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.reset-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+}
+
+.reset-icon {
+    font-size: 1.5rem;
+}
+
+.reset-text {
+    flex: 1;
+}
+
+.reset-stat {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.reset-amount {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
 @media (max-width: 600px) {
     .summary-stats {
         grid-template-columns: 1fr;
@@ -707,184 +835,7 @@
         flex-direction: column;
         gap: 0.5rem;
     }
-}
-
-.training-style .training-stat-section {
-    background: var(--bg-card);
-    border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
-}
-
-.ev-breakdown {
-    display: flex;
-    gap: 1rem;
-    margin: 0.75rem 0;
-    padding: 0.75rem;
-    background: var(--bg-tertiary);
-    border-radius: 8px;
-}
-
-.ev-from-vitamins {
-    color: var(--secondary);
-    font-size: 0.9rem;
-}
-
-.ev-from-battles {
-    color: var(--accent);
-    font-size: 0.9rem;
-}
-
-.power-item-info {
-    margin-bottom: 0.75rem;
-}
-
-.power-badge {
-    display: inline-block;
-    padding: 0.4rem 0.75rem;
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 230, 109, 0.2));
-    border: 1px solid var(--primary);
-    border-radius: 20px;
-    color: var(--primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.battles-summary {
-    margin: 0.75rem 0;
-    padding: 0.5rem;
-    background: rgba(78, 205, 196, 0.1);
-    border-radius: 6px;
-    text-align: center;
-}
-
-.battles-total {
-    color: var(--secondary);
-    font-weight: 700;
-    font-size: 1rem;
-}
-
-.pokemon-section {
-    margin-top: 1rem;
-}
-
-.section-label {
-    display: block;
-    color: var(--text-primary);
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
-}
-
-.pokemon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 0.75rem;
-}
-
-.pokemon-card {
-    background: var(--bg-tertiary);
-    border-radius: 10px;
-    padding: 1rem;
-    border-left: 3px solid var(--primary);
-    transition: all 0.2s ease;
-}
-
-.pokemon-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
-}
-
-.pokemon-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.pokemon-name {
-    font-weight: 700;
-    color: var(--text-primary);
-    font-size: 1rem;
-}
-
-.pokemon-ev-badge {
-    background: var(--accent);
-    color: var(--dark);
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.pokemon-details {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.pokemon-battles {
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.pokemon-total-ev {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-}
-
-.pokemon-location {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-}
-
-.pokemon-level {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-}
-
-.pokemon-sandwich {
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
-    border-radius: 6px;
-    color: var(--primary);
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-}
-
-.best-location-info {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background: linear-gradient(135deg, rgba(255, 230, 109, 0.1), rgba(255, 107, 107, 0.1));
-    border-radius: 8px;
-    border: 1px solid var(--accent);
-}
-
-.location-title {
-    display: block;
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-}
-
-.location-name {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.location-area {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-}
-
-@media (max-width: 600px) {
+    
     .pokemon-grid {
         grid-template-columns: 1fr;
     }
@@ -894,3 +845,32 @@
         gap: 0.5rem;
     }
 }
+
+/* Stat Labels with colors */
+.stat-label {
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.stat-label[data-stat="hp"] { color: var(--stat-hp); }
+.stat-label[data-stat="attack"] { color: var(--stat-attack); }
+.stat-label[data-stat="defense"] { color: var(--stat-defense); }
+.stat-label[data-stat="sp_atk"] { color: var(--stat-sp_atk); }
+.stat-label[data-stat="sp_def"] { color: var(--stat-sp_def); }
+.stat-label[data-stat="speed"] { color: var(--stat-speed); }
+
+/* Stat input border colors */
+.stat-input-group input[data-stat="hp"]:focus { border-color: var(--stat-hp); }
+.stat-input-group input[data-stat="attack"]:focus { border-color: var(--stat-attack); }
+.stat-input-group input[data-stat="defense"]:focus { border-color: var(--stat-defense); }
+.stat-input-group input[data-stat="sp_atk"]:focus { border-color: var(--stat-sp_atk); }
+.stat-input-group input[data-stat="sp_def"]:focus { border-color: var(--stat-sp_def); }
+.stat-input-group input[data-stat="speed"]:focus { border-color: var(--stat-speed); }
+
+/* Stat input max-ev colors */
+.stat-input-group input[data-stat="hp"].max-ev { border-color: var(--stat-hp); color: var(--stat-hp); }
+.stat-input-group input[data-stat="attack"].max-ev { border-color: var(--stat-attack); color: var(--stat-attack); }
+.stat-input-group input[data-stat="defense"].max-ev { border-color: var(--stat-defense); color: var(--stat-defense); }
+.stat-input-group input[data-stat="sp_atk"].max-ev { border-color: var(--stat-sp_atk); color: var(--stat-sp_atk); }
+.stat-input-group input[data-stat="sp_def"].max-ev { border-color: var(--stat-sp_def); color: var(--stat-sp_def); }
+.stat-input-group input[data-stat="speed"].max-ev { border-color: var(--stat-speed); color: var(--stat-speed); }
