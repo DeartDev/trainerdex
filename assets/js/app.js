@@ -29,6 +29,21 @@ const App = {
         document.getElementById('generate-plan').addEventListener('click', () => {
             this.generatePlan();
         });
+
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+            this.handleRefresh();
+        });
+    },
+
+    handleRefresh() {
+        const btn = document.getElementById('refresh-btn');
+        btn.classList.add('loading');
+        
+        localStorage.clear();
+        
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
     },
 
     loadTheme() {

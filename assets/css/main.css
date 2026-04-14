@@ -381,3 +381,89 @@ body {
         padding: 1rem;
     }
 }
+
+/* Floating Refresh Button */
+.refresh-floating-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(96, 165, 250, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.refresh-floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(96, 165, 250, 0.6);
+}
+
+.refresh-floating-btn:active {
+    transform: scale(0.95);
+}
+
+.refresh-icon {
+    font-size: 1.5rem;
+    color: white;
+    animation: none;
+}
+
+.refresh-floating-btn.loading .refresh-icon {
+    animation: spin 1s linear infinite;
+}
+
+.refresh-tooltip {
+    position: absolute;
+    left: calc(100% + 12px);
+    bottom: 50%;
+    transform: translateY(50%);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.refresh-floating-btn:hover .refresh-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+[data-theme="light"] .refresh-floating-btn {
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+[data-theme="light"] .refresh-floating-btn:hover {
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+@media (max-width: 768px) {
+    .refresh-floating-btn {
+        bottom: 16px;
+        left: 16px;
+        width: 48px;
+        height: 48px;
+    }
+    
+    .refresh-icon {
+        font-size: 1.2rem;
+    }
+    
+    .refresh-tooltip {
+        display: none;
+    }
+}
