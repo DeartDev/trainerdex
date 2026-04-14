@@ -1,33 +1,56 @@
 # TrainerDex 🐾
 
-Herramienta de entrenamiento competitivo para **Pokémon Scarlet & Violet**. Permite buscar un Pokémon, configurar tus objetivos de EVs y generar un plan de entrenamiento paso a paso.
+Herramienta de entrenamiento competitivo para **Pokémon Scarlet & Violet**. Permite buscar un Pokémon, configurar tus objetivos de EVs y generar un plan de entrenamiento paso a paso con recomendaciones detalladas.
 
-![TrainerDex](https://img.shields.io/badge/Version-1.0.0-blue)
+![TrainerDex](https://img.shields.io/badge/Version-2.0.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-CSS3-JS-green)
 ![PokéAPI](https://img.shields.io/badge/Powered-PokéAPI-red)
 
 ## ✨ Características
 
 - 🔍 **Búsqueda de Pokémon** - Consume la PokéAPI v2 para obtener datos
-- 📊 **Stats Base** - Visualiza los stats base de cualquier Pokémon
+- 📊 **Stats Base** - Visualiza los stats base de cualquier Pokémon con colores por stat
 - ⚡ **EV Yield** - Muestra cuántos EVs otorga cada Pokémon al derrotarlo
 - 🎯 **Configuración de Entrenamiento** - Selecciona los stats objetivo (0-252 EVs)
-- 💊 **Vitaminas** - Calcula cuántas vitaminas necesitas
-- 🎒 **Power Items** - Recomienda objetos de poder (+8 EVs/combate)
-- ⚔️ **Plan de Batallas** - Indica cuántos Pokémon derrotar y dónde
-- 🌿 **Naturalezas** - Recomienda la mejor naturaleza según tu build
-- 🔄 **Reset de EVs** - Calcula cuántas berries necesitas para reducir EVs
+- 💊 **Vitaminas** - Calcula cuántas vitaminas necesitas, dónde comprarlas y costo
+- 🎒 **Power Items** - Recomienda objetos de poder (+8 EVs/combate) con ubicación
+- ⚔️ **Plan de Batallas Detallado** - Por cada stat: 2-3 Pokémon recomendados, ubicación, nivel, cuántos defeat
+- 🥪 **Sandwiches** - Recomienda sandwiches para encontrar más Pokémon del tipo deseado
+- 🌿 **Naturalezas** - Recomienda la mejor naturaleza + cómo cambiarla (Mentas)
+- 🔄 **Reset de EVs** - Calcula cuántas berries necesitas y dónde conseguirlas
 - 🌓 **Tema Oscuro/Claro** - Toggle para cambiar entre temas
 - 💾 **Búsquedas Recientes** - Guarda tu historial de búsquedas
+
+## 🎨 Sistema de Colores
+
+### Colores por Stat
+
+| Stat    | Color (Dark)       | Color (Light) |
+| ------- | ------------------ | ------------- |
+| HP      | Verde `#4ADE80`    | `#22C55E`     |
+| Attack  | Rojo `#F87171`     | `#EF4444`     |
+| Defense | Azul `#60A5FA`     | `#3B82F6`     |
+| Sp. Atk | Amarillo `#FACC15` | `#F59E0B`     |
+| Sp. Def | Púrpura `#A78BFA`  | `#8B5CF6`     |
+| Speed   | Rosa `#FB7185`     | `#F43F5E`     |
+
+### Paleta Principal
+
+| Elemento          | Dark Mode | Light Mode |
+| ----------------- | --------- | ---------- |
+| Primary (botones) | `#60A5FA` | `#3B82F6`  |
+| Secondary (hover) | `#FDE047` | `#FACC15`  |
+| Accent (alertas)  | `#FB7185` | `#F43F5E`  |
 
 ## 🚀 Uso
 
 1. Abre `index.html` en tu navegador
 2. Escribe el nombre de un Pokémon (ej: `charizard`, `pikachu`, `gengar`)
 3. Presiona **Enter** o click en el botón de búsqueda
-4. En el panel izquierdo, configura los EVs objetivo para cada stat
-5. Click en **"Generar plan de entrenamiento"**
-6. ¡Sigue las instrucciones en pantalla!
+4. Verás los stats base y EV yield del Pokémon
+5. En el panel izquierdo, configura los EVs objetivo para cada stat
+6. Click en **"Generar plan de entrenamiento"**
+7. ¡Sigue las instrucciones detalladas en pantalla!
 
 ## 📁 Estructura del Proyecto
 
@@ -39,26 +62,27 @@ trainerdex/
 │   ├── css/
 │   │   ├── main.css          # Estilos globales
 │   │   ├── components.css    # Componentes UI
-│   │   └── themes.css        # Variables de tema
+│   │   └── themes.css        # Variables de tema + colores por stat
 │   └── js/
 │       ├── api/
 │       │   ├── pokeapi.js    # Cliente PokéAPI
 │       │   └── cache.js      # Cache localStorage
 │       ├── data/
-│       │   ├── natures.js    # Naturalezas (25)
-│       │   ├── items.js      # Vitaminas, power items, berries
-│       │   └── locations-sv.js # Ubicaciones SV
+│       │   ├── natures.js    # Naturalezas (25) + ments
+│       │   ├── items.js      # Vitaminas, power items, berries, mints
+│       │   └── locations-sv.js # Ubicaciones SV + sandwiches
 │       ├── utils/
 │       │   ├── helpers.js    # Utilidades
 │       │   ├── calculator.js # Calculadora de EVs
+│       │   ├── instructions.js # Generación de instrucciones detalladas
 │       │   └── trainer.js    # Motor de planes
-│       └── app.js            # Lógica principal
+│       └── app.js            # Lógica principal + UI
 ```
 
 ## 🛠️ Tecnologías
 
 - **HTML5** - Estructura semántica
-- **CSS3** - Variables CSS, Flexbox, Grid
+- **CSS3** - Variables CSS, Flexbox, Grid, colores por stat
 - **JavaScript ES6+** - Vanilla JS (sin frameworks)
 - **PokéAPI v2** - Datos de Pokémon
 - **LocalStorage** - Cache y búsquedas recientes
@@ -66,34 +90,64 @@ trainerdex/
 ## 📋 Datos Incluidos
 
 ### Vitaminas (+10 EVs cada una)
-| Stat | Vitamia |
-|------|---------|
-| HP | HP Up |
-| Attack | Protein |
-| Defense | Iron |
-| Sp. Atk | Calcium |
-| Sp. Def | Zinc |
-| Speed | Carbos |
+
+| Stat    | Vitamia | Ubicación      | Precio  |
+| ------- | ------- | -------------- | ------- |
+| HP      | HP Up   | Chansey Supply | ₽10,000 |
+| Attack  | Protein | Chansey Supply | ₽10,000 |
+| Defense | Iron    | Chansey Supply | ₽10,000 |
+| Sp. Atk | Calcium | Chansey Supply | ₽10,000 |
+| Sp. Def | Zinc    | Chansey Supply | ₽10,000 |
+| Speed   | Carbos  | Chansey Supply | ₽10,000 |
 
 ### Power Items (+8 EVs/combate)
-| Stat | Objeto |
-|------|--------|
-| HP | Power Weight |
-| Attack | Power Bracer |
-| Defense | Power Belt |
-| Sp. Atk | Power Lens |
-| Sp. Def | Power Band |
-| Speed | Power Anklet |
+
+| Stat    | Objeto       | Ubicación         | Precio  |
+| ------- | ------------ | ----------------- | ------- |
+| HP      | Power Weight | Delibird Presents | ₽10,000 |
+| Attack  | Power Bracer | Delibird Presents | ₽10,000 |
+| Defense | Power Belt   | Delibird Presents | ₽10,000 |
+| Sp. Atk | Power Lens   | Delibird Presents | ₽10,000 |
+| Sp. Def | Power Band   | Delibird Presents | ₽10,000 |
+| Speed   | Power Anklet | Delibird Presents | ₽10,000 |
 
 ### Berries de Reset (-10 EVs cada una)
-| Stat | Berry |
-|------|-------|
-| HP | Pomeg |
-| Attack | Kelpsy |
-| Defense | Qualot |
-| Sp. Atk | Hondew |
-| Sp. Def | Grepa |
-| Speed | Tamato |
+
+| Stat    | Berry        | Ubicación                     |
+| ------- | ------------ | ----------------------------- |
+| HP      | Pomeg Berry  | Asado Desert, West Province   |
+| Attack  | Kelpsy Berry | Asado Desert, South Province  |
+| Defense | Qualot Berry | Asado Desert, West Province   |
+| Sp. Atk | Hondew Berry | West Province, Area Zero      |
+| Sp. Def | Grepa Berry  | West Province, Casseroya Lake |
+| Speed   | Tamato Berry | South Province                |
+
+### Mentas para Cambiar Naturaleza
+
+| Naturaleza | Menta        | Precio | Ubicación                |
+| ---------- | ------------ | ------ | ------------------------ |
+| Adamant    | Adamant Mint | ₽1,000 | Casual Branch (Mesagoza) |
+| Jolly      | Jolly Mint   | ₽1,000 | Casual Branch (Mesagoza) |
+| Bold       | Bold Mint    | ₽1,000 | Casual Branch (Mesagoza) |
+| Modest     | Modest Mint  | ₽1,000 | Casual Branch (Mesagoza) |
+| Timid      | Timid Mint   | ₽1,000 | Casual Branch (Mesagoza) |
+| Calm       | Calm Mint    | ₽1,000 | Casual Branch (Mesagoza) |
+
+## 🎯 Ejemplo de Plan de Entrenamiento
+
+Para un Pokémon con Attack 252 EVs y Speed 252 EVs:
+
+### Por cada stat verás:
+
+1. **Desglose de EVs**: Vitaminas + Batallas
+2. **Power Item**: Si está equipado (+8 EVs/batalla)
+3. **Total de batallas** necesarias
+4. **2-3 Pokémon** recomendados con:
+   - Nombre y EVs que otorgan
+   - Cantidad de KOs necesarios
+   - Ubicación exacta
+   - Nivel recomendado
+   - Sandwich recomendado
 
 ## 🌎 Despliegue en GitHub Pages
 
@@ -103,7 +157,7 @@ trainerdex/
 # 2. Clona y sube los archivos
 git init
 git add .
-git commit -m "TrainerDex v1.0"
+git commit -m "TrainerDex v2.0"
 git remote add origin https://github.com/TU_USUARIO/trainerdex.git
 git push -u origin main
 
@@ -122,6 +176,8 @@ git push -u origin main
 - El límite de EVs es 252 por stat y 510 en total
 - Las vitaminas dan máximo 100 EVs por stat (10 unidades)
 - Los power items se compran en Delibird Presents (Mesagoza, Levincia, Cascarrafa)
+- Las mentas se compran en Casual Branch (Mesagoza)
+- Los sandwiches potencian los encuentros del tipo especificado
 
 ## 📄 Licencia
 
@@ -129,4 +185,5 @@ MIT License - Puedes usar, modificar y distribuir este proyecto.
 
 ---
 
-*Entrena inteligente, vence fácil* 🏆
+_Entrena inteligente, vence fácil_ 🏆 - TerWorks - DeartDev
+
