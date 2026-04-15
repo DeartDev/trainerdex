@@ -109,8 +109,8 @@
 
                     <div id="training-summary" class="training-summary hidden"></div>
 
-                    <div id="reset-section" class="reset-section hidden">
-                        <h3 class="section-subtitle">Reset de EVs</h3>
+                    <div id="reset-section" class="reset-section">
+                        <h3 class="section-subtitle">🍇 Reset de EVs</h3>
                         <div id="reset-info" class="reset-info"></div>
                     </div>
                 </div>
@@ -124,11 +124,17 @@
         </main>
     </div>
 
-    <!-- Botón flotante para refresh y clear cache -->
-    <button id="refresh-btn" class="refresh-floating-btn" aria-label="Limpiar cache y refresh">
-        <span class="refresh-icon">🔄</span>
-        <span class="refresh-tooltip">Limpiar cache y recargar</span>
-    </button>
+    <!-- Botones flotantes para refresh y clear cache -->
+    <div class="floating-buttons">
+        <button id="clear-cache-btn" class="refresh-floating-btn" aria-label="Limpiar cache">
+            <span class="refresh-icon">🗑️</span>
+            <span class="refresh-tooltip">Limpiar cache</span>
+        </button>
+        <button id="refresh-btn" class="refresh-floating-btn" aria-label="Recargar pagina">
+            <span class="refresh-icon">🔄</span>
+            <span class="refresh-tooltip">Recargar</span>
+        </button>
+    </div>
 
     <!-- Data files first (constants) -->
     <script src="assets/js/data/natures.js"></script>

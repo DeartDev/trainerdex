@@ -4,7 +4,7 @@ Herramienta de entrenamiento competitivo para **Pokémon Scarlet & Violet**. Per
 
 Visita el sitio: https://deartdev.github.io/trainerdex/
 
-![TrainerDex](https://img.shields.io/badge/Version-2.1.0-blue)
+![TrainerDex](https://img.shields.io/badge/Version-2.2.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-CSS3-JS-green)
 ![PokéAPI](https://img.shields.io/badge/Powered-PokéAPI-red)
 
@@ -172,11 +172,22 @@ trainerdex/
 
 ## 🛠️ Tecnologías
 
+- **Termux** - Entorno de terminal en Android (dispositivo móvil)
 - **HTML5** - Estructura semántica
 - **CSS3** - Variables CSS, Flexbox, Grid, colores por stat
 - **JavaScript ES6+** - Vanilla JS (sin frameworks)
 - **PokéAPI v2** - Datos de Pokémon
 - **LocalStorage** - Cache y búsquedas recientes
+
+_Desarrollado y construido íntegramente en un dispositivo Android usando Termux_
+
+---
+
+## 🏆 Desarrollo
+
+- **TerWorks** - Marca personal de desarrollo
+- **DeartDev** - Desarrollador principal
+- 💻 Todo el desarrollo realizado desde dispositivo móvil con Termux
 
 ## 📋 Datos Incluidos
 
@@ -276,5 +287,7 @@ MIT License - Puedes usar, modificar y distribuir este proyecto.
 
 ---
 
-_Entrena inteligente, vence fácil_ 🏆 - TerWorks - DeartDev
+_Entrena inteligente, vence fácil_ 🏆 - **TerWorks** - **DeartDev**
+
+_Desarrollado con 💙 desde Android + Termux_
 

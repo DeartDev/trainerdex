@@ -33,17 +33,31 @@ const App = {
         document.getElementById('refresh-btn').addEventListener('click', () => {
             this.handleRefresh();
         });
+
+        document.getElementById('clear-cache-btn').addEventListener('click', () => {
+            this.handleClearCache();
+        });
     },
 
     handleRefresh() {
         const btn = document.getElementById('refresh-btn');
         btn.classList.add('loading');
         
-        localStorage.clear();
-        
         setTimeout(() => {
             window.location.reload();
         }, 500);
+    },
+
+    handleClearCache() {
+        const btn = document.getElementById('clear-cache-btn');
+        btn.classList.add('loading');
+        
+        this.cache.clear();
+        
+        setTimeout(() => {
+            btn.classList.remove('loading');
+            alert('Cache limpiado exitosamente');
+        }, 300);
     },
 
     loadTheme() {
@@ -280,8 +294,8 @@ const App = {
         });
 
         this.renderNatureRecommendation(plan.natureRecommendations);
-        this.renderDetailedTrainingPlan(plan);
         this.renderResetInfo(plan.reset);
+        this.renderDetailedTrainingPlan(plan);
         this.renderSummary(plan.summary);
     },
 
@@ -434,9 +448,7 @@ const App = {
             const borderColor = priorityColors[theme]?.[step.priority] || priorityColors[theme].bajo;
             stepEl.style.setProperty('--step-border', borderColor);
             
-            if (step.type === 'reset') {
-                stepEl.innerHTML = this.renderResetStep(step);
-            } else if (step.type === 'natures') {
+            if (step.type === 'natures') {
                 stepEl.innerHTML = this.renderNaturesStep(step);
             }
 
@@ -792,15 +804,12 @@ const App = {
     renderResetInfo(reset) {
         const section = document.getElementById('reset-section');
         
-        if (reset.length === 0) {
-            Helpers.hideElement(section);
-            return;
-        }
-
         Helpers.showElement(section);
 
         const container = document.getElementById('reset-info');
-        container.innerHTML = reset.map(r => `
+        container.innerHTML = `
+            <p class="reset-intro">Si tu Pokémon tiene los EVs al máximo (252), usa estas berries para resetear cualquier stat:</p>
+            ${reset.map(r => `
             <div class="reset-item">
                 <span class="reset-icon">🍇</span>
                 <div class="reset-text">
@@ -808,7 +817,9 @@ const App = {
                     <span class="reset-amount">-${r.reduce} EVs → ${r.berries}x ${r.berryName}</span>
                 </div>
             </div>
-        `).join('');
+            `).join('')}
+            <div class="reset-note">💡 Cada berry reduce 10 EVs. Usa PKMN que no dé EVs en ese stat para maximizar el efecto.</div>
+        `;
     },
 
     loadRecentSearches() {

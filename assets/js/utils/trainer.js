@@ -24,11 +24,10 @@ const Trainer = {
             summary: {}
         };
 
-        const currentEvs = { hp: 0, attack: 0, defense: 0, sp_atk: 0, sp_def: 0, speed: 0 };
-        const resetPlan = Calculator.calculateResetPlan(currentEvs, targetStats);
+        const currentEvs = { hp: 252, attack: 252, defense: 252, sp_atk: 252, sp_def: 252, speed: 252 };
+        const resetPlan = Calculator.calculateResetPlan(currentEvs, { hp: 0, attack: 0, defense: 0, sp_atk: 0, sp_def: 0, speed: 0 });
         if (resetPlan.length > 0) {
             plan.reset = resetPlan;
-            plan.warnings.push('Se requiere reset de EVs');
         }
 
         sortedStats.forEach(({ stat, value, priority }) => {
@@ -310,13 +309,6 @@ const Trainer = {
 
     generateDetailedSteps(plan) {
         const detailedSteps = [];
-
-        if (plan.reset.length > 0) {
-            const resetInfo = Instructions.getResetInstructions(plan.reset);
-            if (resetInfo) {
-                detailedSteps.push({ type: 'reset', ...resetInfo });
-            }
-        }
 
         const theme = document.documentElement?.getAttribute('data-theme') || 'dark';
         

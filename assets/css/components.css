@@ -960,6 +960,14 @@
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--accent);
+}
+
+.reset-section .section-subtitle {
+    color: var(--accent);
 }
 
 .reset-info {
@@ -968,12 +976,18 @@
   gap: 0.75rem;
 }
 
+.reset-intro {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
 .reset-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  background: var(--bg-tertiary);
+  background: var(--bg-card);
   border-radius: 8px;
   border-left: 3px solid var(--accent);
 }
@@ -994,6 +1008,15 @@
 .reset-amount {
   font-size: 0.9rem;
   color: var(--text-secondary);
+}
+
+.reset-note {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(96, 165, 250, 0.1);
+    border-radius: 8px;
+    color: var(--primary);
+    font-size: 0.85rem;
 }
 
 /* Responsive */
