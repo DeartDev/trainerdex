@@ -261,7 +261,7 @@ body {
 
 .btn-primary:hover:not(:disabled) {
     background: var(--secondary);
-    color: #0F172A;
+    color: var(--text-primary);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(253, 224, 71, 0.4);
 }
