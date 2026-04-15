@@ -4,7 +4,7 @@ const Trainer = {
         
         const selectedStats = this.getSelectedStats(targetStats);
         const sortedStats = this.sortStatsByPriority(targetStats);
-        const natureRecommendations = this.getRecommendedNatures(sortedStats);
+        const natureRecommendations = this.getRecommendedNatures(targetStats);
         
         const plan = {
             sortedStats: sortedStats,
@@ -168,33 +168,47 @@ const Trainer = {
         }[priority] || '';
     },
 
-    getRecommendedNatures(sortedStats) {
+    getRecommendedNatures(targetStats) {
         const natures = [];
         const usedNatures = new Set();
         
-        sortedStats.slice(0, 2).forEach(({ stat }) => {
+        const selectedStats = Object.entries(targetStats)
+            .filter(([_, value]) => value > 0)
+            .sort((a, b) => b[1] - a[1]);
+
+        selectedStats.forEach(([stat, evValue]) => {
+            if (natures.length >= 2) return;
+            
             const recommended = RECOMMENDED_NATURES[stat];
-            if (recommended) {
-                for (const natureKey of recommended) {
-                    if (natures.length >= 2) break;
-                    if (usedNatures.has(natureKey)) continue;
-                    
-                    const nature = NATURES_ES[natureKey];
-                    if (nature) {
-                        usedNatures.add(natureKey);
-                        natures.push({
-                            name: nature.nombre,
-                            key: natureKey,
-                            plus: nature.plus,
-                            minus: nature.minus,
-                            icon: nature.icono,
-                            statPlus: STAT_NAMES_ES[nature.plus],
-                            statMinus: STAT_NAMES_ES[nature.minus],
-                            recommendedFor: STAT_NAMES_ES[stat],
-                            recommendedForKey: stat
-                        });
-                    }
-                }
+            if (!recommended) return;
+            
+            for (const natureKey of recommended) {
+                if (natures.length >= 2) break;
+                if (usedNatures.has(natureKey)) continue;
+                
+                const nature = NATURES_ES[natureKey];
+                if (!nature) continue;
+                
+                const statMinus = nature.minus;
+                const isMinusStatTrained = selectedStats.some(([s]) => s === statMinus);
+                
+                if (isMinusStatTrained) continue;
+                
+                usedNatures.add(natureKey);
+                natures.push({
+                    name: nature.nombre,
+                    key: natureKey,
+                    plus: nature.plus,
+                    minus: nature.minus,
+                    icon: nature.icono,
+                    statPlus: STAT_NAMES_ES[nature.plus],
+                    statMinus: STAT_NAMES_ES[nature.minus],
+                    recommendedFor: STAT_NAMES_ES[stat],
+                    recommendedForKey: stat,
+                    evValue: evValue
+                });
+                
+                break;
             }
         });
         
