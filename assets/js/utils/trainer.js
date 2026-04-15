@@ -2,13 +2,21 @@ const Trainer = {
     generatePlan(pokemon, targetStats, options = {}) {
         const { useVitamins = true, usePowerItem = true } = options;
         
+        const selectedStats = this.getSelectedStats(targetStats);
+        const sortedStats = this.sortStatsByPriority(targetStats);
+        const natureRecommendations = this.getRecommendedNatures(sortedStats);
+        
         const plan = {
+            sortedStats: sortedStats,
+            selectedStats: selectedStats,
+            natureRecommendations: natureRecommendations,
+            statPlans: {},
             reset: [],
             items: [],
             vitamins: {},
             battles: {},
             pokemonToFight: {},
-            nature: null,
+            nature: natureRecommendations[0] || null,
             steps: [],
             detailedSteps: [],
             warnings: [],
@@ -16,39 +24,33 @@ const Trainer = {
             summary: {}
         };
 
-        const currentEvs = {
-            hp: 0, attack: 0, defense: 0,
-            sp_atk: 0, sp_def: 0, speed: 0
-        };
-
+        const currentEvs = { hp: 0, attack: 0, defense: 0, sp_atk: 0, sp_def: 0, speed: 0 };
         const resetPlan = Calculator.calculateResetPlan(currentEvs, targetStats);
         if (resetPlan.length > 0) {
             plan.reset = resetPlan;
             plan.warnings.push('Se requiere reset de EVs');
         }
 
-        const mainStat = this.getMainStat(targetStats);
-        if (mainStat) {
-            plan.nature = this.getRecommendedNature(mainStat);
-        }
-
-        STAT_KEYS.forEach(stat => {
-            const target = targetStats[stat] || 0;
+        sortedStats.forEach(({ stat, value, priority }) => {
+            const target = value;
             if (target <= 0) return;
 
-            const evYield = pokemon.stats[stat]?.effort || 0;
+            const pokemonEvYield = pokemon.stats[stat]?.effort || 0;
+            const evYield = pokemonEvYield > 0 ? pokemonEvYield : 1;
             
-            if (usePowerItem && evYield > 0) {
+            let powerItemAdded = false;
+            if (usePowerItem) {
                 const powerItem = POWER_ITEM_STATS[stat] ? ITEMS.powerItems[POWER_ITEM_STATS[stat]] : null;
                 if (powerItem) {
                     const existingIndex = plan.items.findIndex(i => i.stat === stat);
                     if (existingIndex === -1) {
                         plan.items.push(powerItem);
                     }
+                    powerItemAdded = true;
                 }
             }
 
-            const calculation = usePowerItem && evYield > 0
+            const calculation = usePowerItem
                 ? Calculator.calculateEvsNeededWithPowerItem(0, target, evYield)
                 : Calculator.calculateEvsNeeded(0, target, evYield);
 
@@ -89,8 +91,29 @@ const Trainer = {
 
                 if (pokemonDetails.length > 0) {
                     plan.pokemonToFight[stat] = pokemonDetails;
+                } else {
+                    plan.pokemonToFight[stat] = [{
+                        name: 'Cualquier Pokémon',
+                        evYield: battlesWithPower > 0 ? battlesWithPower : 1,
+                        evPerBattle: battlesWithPower > 0 ? battlesWithPower : 1,
+                        location: 'Cualquier zona con Pokémon salvajes',
+                        level: 'Nivel recomendado según tu equipo',
+                        sandwich: null,
+                        sandwichName: null,
+                        battlesNeeded: calculation.battles,
+                        totalEvFromPokemon: calculation.battles * (battlesWithPower > 0 ? battlesWithPower : 1)
+                    }];
                 }
             }
+
+            plan.statPlans[stat] = {
+                priority: priority,
+                powerItem: powerItemAdded ? (POWER_ITEM_STATS[stat] ? ITEMS.powerItems[POWER_ITEM_STATS[stat]] : null) : null,
+                vitamins: plan.vitamins[stat] || 0,
+                battles: plan.battles[stat] || 0,
+                pokemonToFight: plan.pokemonToFight[stat] || [],
+                evYield: evYield
+            };
         });
 
         plan.steps = this.generateSteps(plan);
@@ -98,6 +121,84 @@ const Trainer = {
         plan.summary = this.getTrainingSummary(plan);
 
         return plan;
+    },
+
+    getSelectedStats(targetStats) {
+        return STAT_KEYS.filter(stat => (targetStats[stat] || 0) > 0);
+    },
+
+    sortStatsByPriority(targetStats) {
+        return STAT_KEYS
+            .filter(stat => (targetStats[stat] || 0) > 0)
+            .map(stat => ({
+                stat: stat,
+                value: targetStats[stat],
+                priority: this.getPriorityLevel(targetStats[stat])
+            }))
+            .sort((a, b) => b.value - a.value);
+    },
+
+    getPriorityLevel(value) {
+        if (value >= 252) return 'principal';
+        if (value >= 100) return 'secundario';
+        return 'bajo';
+    },
+
+    getPriorityColor(priority, theme = 'dark') {
+        const colors = {
+            dark: {
+                principal: '#4ADE80',
+                secundario: '#FDE047',
+                bajo: '#6B7280'
+            },
+            light: {
+                principal: '#22C55E',
+                secundario: '#F59E0B',
+                bajo: '#94A3B8'
+            }
+        };
+        return colors[theme]?.[priority] || colors[theme].bajo;
+    },
+
+    getPriorityLabel(priority) {
+        return {
+            principal: '⭐ Principal',
+            secundario: '🔶 Secundario',
+            bajo: '🔹 Bajo'
+        }[priority] || '';
+    },
+
+    getRecommendedNatures(sortedStats) {
+        const natures = [];
+        const usedNatures = new Set();
+        
+        sortedStats.slice(0, 2).forEach(({ stat }) => {
+            const recommended = RECOMMENDED_NATURES[stat];
+            if (recommended) {
+                for (const natureKey of recommended) {
+                    if (natures.length >= 2) break;
+                    if (usedNatures.has(natureKey)) continue;
+                    
+                    const nature = NATURES_ES[natureKey];
+                    if (nature) {
+                        usedNatures.add(natureKey);
+                        natures.push({
+                            name: nature.nombre,
+                            key: natureKey,
+                            plus: nature.plus,
+                            minus: nature.minus,
+                            icon: nature.icono,
+                            statPlus: STAT_NAMES_ES[nature.plus],
+                            statMinus: STAT_NAMES_ES[nature.minus],
+                            recommendedFor: STAT_NAMES_ES[stat],
+                            recommendedForKey: stat
+                        });
+                    }
+                }
+            }
+        });
+        
+        return natures;
     },
 
     getMainStat(targetStats) {
@@ -172,7 +273,7 @@ const Trainer = {
         if (Object.keys(plan.battles).length > 0) {
             const battleDetails = Object.entries(plan.battles).map(([stat, count]) => {
                 const pokemonInfo = plan.pokemonToFight[stat];
-                return `${count}x vs ${pokemonInfo?.pokemon || 'Pokémon'} (${STAT_NAMES_ES[stat]})`;
+                return `${count}x vs ${pokemonInfo?.[0]?.name || 'Pokémon'} (${STAT_NAMES_ES[stat]})`;
             });
 
             steps.push({
@@ -182,11 +283,11 @@ const Trainer = {
             });
         }
 
-        if (plan.nature) {
+        if (plan.natureRecommendations?.length > 0) {
             steps.push({
                 icon: '🌿',
-                title: 'Naturaleza',
-                detail: `${plan.nature.name} (+${plan.nature.statPlus} / -${plan.nature.statMinus})`
+                title: 'Naturalezas',
+                detail: plan.natureRecommendations.map(n => n.name).join(', ')
             });
         }
 
@@ -199,56 +300,74 @@ const Trainer = {
         if (plan.reset.length > 0) {
             const resetInfo = Instructions.getResetInstructions(plan.reset);
             if (resetInfo) {
-                detailedSteps.push({
-                    type: 'reset',
-                    ...resetInfo
-                });
+                detailedSteps.push({ type: 'reset', ...resetInfo });
             }
         }
 
-        if (plan.items.length > 0) {
-            const powerInfo = Instructions.getPowerItemInstructions(plan.items);
-            if (powerInfo) {
+        const theme = document.documentElement?.getAttribute('data-theme') || 'dark';
+        
+        plan.sortedStats.forEach(({ stat, value, priority }) => {
+            const statPlan = plan.statPlans[stat];
+            if (!statPlan) return;
+            
+            if (statPlan.powerItem) {
                 detailedSteps.push({
-                    type: 'powerItems',
-                    ...powerInfo
+                    type: 'powerItem',
+                    stat: stat,
+                    statKey: stat,
+                    priority: priority,
+                    value: value,
+                    icon: '🎒',
+                    title: `Objeto de Poder - ${STAT_NAMES_ES[stat]}`,
+                    powerItem: statPlan.powerItem,
+                    description: `Equipa ${statPlan.powerItem.name} para obtener +${statPlan.powerItem.evBonus} EVs adicionales por combate`
                 });
             }
-        }
 
-        if (Object.keys(plan.vitamins).length > 0) {
-            const vitaminInfo = Instructions.getVitaminInstructions(plan.vitamins);
-            if (vitaminInfo) {
+            if (statPlan.vitamins > 0) {
+                const vitaminKey = VITAMIN_STATS[stat];
+                const vitamin = ITEMS.vitamins[vitaminKey];
                 detailedSteps.push({
-                    type: 'vitamins',
-                    ...vitaminInfo
+                    type: 'vitamin',
+                    stat: stat,
+                    statKey: stat,
+                    priority: priority,
+                    value: value,
+                    icon: '💊',
+                    title: `Vitaminas - ${STAT_NAMES_ES[stat]}`,
+                    vitamin: vitamin,
+                    count: statPlan.vitamins,
+                    evTotal: statPlan.vitamins * 10,
+                    description: `Usa ${statPlan.vitamins}x ${vitamin.name} (+${statPlan.vitamins * 10} EVs)`
                 });
             }
-        }
 
-        if (Object.keys(plan.battles).length > 0) {
-            const trainingInfo = Instructions.getTrainingInstructions(
-                plan.battles, 
-                plan.pokemonToFight, 
-                plan.targetStats,
-                plan.vitamins
-            );
-            if (trainingInfo) {
+            if (statPlan.battles > 0 && statPlan.pokemonToFight.length > 0) {
+                const location = LOCATIONS_SV[stat]?.[0];
                 detailedSteps.push({
-                    type: 'training',
-                    ...trainingInfo
+                    type: 'battle',
+                    stat: stat,
+                    statKey: stat,
+                    priority: priority,
+                    value: value,
+                    icon: '⚔️',
+                    title: `Entrenamiento - ${STAT_NAMES_ES[stat]}`,
+                    battles: statPlan.battles,
+                    pokemon: statPlan.pokemonToFight,
+                    location: location,
+                    description: `Derrota ${statPlan.battles} Pokémon para obtener los ${value} EVs restantes`
                 });
             }
-        }
+        });
 
-        if (plan.nature) {
-            const natureInfo = Instructions.getNatureInstructions(plan.nature);
-            if (natureInfo) {
-                detailedSteps.push({
-                    type: 'nature',
-                    ...natureInfo
-                });
-            }
+        if (plan.natureRecommendations?.length > 0) {
+            detailedSteps.push({
+                type: 'natures',
+                icon: '🌿',
+                title: 'Naturalezas Recomendadas',
+                natures: plan.natureRecommendations,
+                description: 'Las mejores naturalezas para tus stats principales'
+            });
         }
 
         return detailedSteps;
@@ -279,9 +398,10 @@ const Trainer = {
             battles: totalBattles,
             totalCost: totalCost,
             totalEvs: totalEvs,
+            natureRecommendations: plan.natureRecommendations,
             hasReset: plan.reset.length > 0,
             hasItems: plan.items.length > 0,
-            hasNature: plan.nature !== null
+            hasNatures: plan.natureRecommendations?.length > 0
         };
     }
 };

@@ -279,16 +279,16 @@ const App = {
             usePowerItem: true
         });
 
-        this.renderNatureRecommendation(plan.nature);
+        this.renderNatureRecommendation(plan.natureRecommendations);
         this.renderDetailedTrainingPlan(plan);
         this.renderResetInfo(plan.reset);
         this.renderSummary(plan.summary);
     },
 
-    renderNatureRecommendation(nature) {
+    renderNatureRecommendation(natureRecommendations) {
         const section = document.getElementById('nature-section');
         
-        if (!nature) {
+        if (!natureRecommendations || natureRecommendations.length === 0) {
             Helpers.hideElement(section);
             return;
         }
@@ -296,7 +296,21 @@ const App = {
         Helpers.showElement(section);
         
         const container = document.getElementById('recommended-nature');
-        container.innerHTML = `
+        
+        if (natureRecommendations.length === 1) {
+            const nature = natureRecommendations[0];
+            container.innerHTML = this.renderSingleNature(nature);
+        } else {
+            container.innerHTML = `
+                <div class="natures-list">
+                    ${natureRecommendations.map(nature => this.renderSingleNature(nature)).join('')}
+                </div>
+            `;
+        }
+    },
+
+    renderSingleNature(nature) {
+        return `
             <div class="nature-card">
                 <span class="nature-icon">${nature.icon}</span>
                 <div class="nature-info">
@@ -304,6 +318,9 @@ const App = {
                     <div class="nature-effects">
                         <span class="nature-effect positive">↑ ${nature.statPlus}</span>
                         <span class="nature-effect negative">↓ ${nature.statMinus}</span>
+                    </div>
+                    <div class="nature-recommended-for">
+                        <span class="recommended-badge">Recomendado para: ${nature.recommendedFor}</span>
                     </div>
                     <div class="nature-instructions">
                         <span class="instruction-label">Cómo cambiar:</span>
@@ -327,24 +344,223 @@ const App = {
         const container = document.getElementById('plan-steps');
         container.innerHTML = '';
 
-        plan.detailedSteps.forEach(step => {
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        
+        const priorityColors = {
+            dark: { principal: '#4ADE80', secundario: '#FDE047', bajo: '#6B7280' },
+            light: { principal: '#22C55E', secundario: '#F59E0B', bajo: '#94A3B8' }
+        };
+        
+        const priorityLabels = {
+            principal: '⭐ Principal',
+            secundario: '🔶 Secundario',
+            bajo: '🔹 Bajo'
+        };
+
+        const powerItemSteps = plan.detailedSteps.filter(s => s.type === 'powerItem');
+        const vitaminSteps = plan.detailedSteps.filter(s => s.type === 'vitamin');
+        const battleSteps = plan.detailedSteps.filter(s => s.type === 'battle');
+        const otherSteps = plan.detailedSteps.filter(s => ['reset', 'natures'].includes(s.type));
+
+        if (powerItemSteps.length > 0) {
+            const categoryHeader = document.createElement('div');
+            categoryHeader.className = 'category-header';
+            categoryHeader.innerHTML = '<span class="category-icon">🎒</span><span class="category-title">Objetos de Poder</span>';
+            container.appendChild(categoryHeader);
+
+            const itemsGrid = document.createElement('div');
+            itemsGrid.className = 'items-grid';
+            
+            powerItemSteps.forEach(step => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'detailed-step';
+                const borderColor = priorityColors[theme]?.[step.priority] || priorityColors[theme].bajo;
+                stepEl.innerHTML = this.renderPowerItemStep(step, borderColor, priorityLabels[step.priority]);
+                itemsGrid.appendChild(stepEl);
+            });
+            container.appendChild(itemsGrid);
+        }
+
+        if (vitaminSteps.length > 0) {
+            if (powerItemSteps.length > 0) {
+                const separator = document.createElement('div');
+                separator.className = 'category-separator';
+                container.appendChild(separator);
+            }
+
+            const categoryHeader = document.createElement('div');
+            categoryHeader.className = 'category-header';
+            categoryHeader.innerHTML = '<span class="category-icon">💊</span><span class="category-title">Vitaminas</span>';
+            container.appendChild(categoryHeader);
+
+            const itemsGrid = document.createElement('div');
+            itemsGrid.className = 'items-grid';
+            
+            vitaminSteps.forEach(step => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'detailed-step';
+                const borderColor = priorityColors[theme]?.[step.priority] || priorityColors[theme].bajo;
+                stepEl.innerHTML = this.renderVitaminStep(step, borderColor, priorityLabels[step.priority]);
+                itemsGrid.appendChild(stepEl);
+            });
+            container.appendChild(itemsGrid);
+        }
+
+        if (battleSteps.length > 0) {
+            if (powerItemSteps.length > 0 || vitaminSteps.length > 0) {
+                const separator = document.createElement('div');
+                separator.className = 'category-separator';
+                container.appendChild(separator);
+            }
+
+            const categoryHeader = document.createElement('div');
+            categoryHeader.className = 'category-header';
+            categoryHeader.innerHTML = '<span class="category-icon">⚔️</span><span class="category-title">Entrenamiento</span>';
+            container.appendChild(categoryHeader);
+
+            battleSteps.forEach(step => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'detailed-step';
+                const borderColor = priorityColors[theme]?.[step.priority] || priorityColors[theme].bajo;
+                stepEl.innerHTML = this.renderBattleStep(step, borderColor, priorityLabels[step.priority]);
+                container.appendChild(stepEl);
+            });
+        }
+
+        otherSteps.forEach(step => {
             const stepEl = document.createElement('div');
             stepEl.className = 'detailed-step';
             
+            const borderColor = priorityColors[theme]?.[step.priority] || priorityColors[theme].bajo;
+            stepEl.style.setProperty('--step-border', borderColor);
+            
             if (step.type === 'reset') {
                 stepEl.innerHTML = this.renderResetStep(step);
-            } else if (step.type === 'powerItems') {
-                stepEl.innerHTML = this.renderPowerItemsStep(step);
-            } else if (step.type === 'vitamins') {
-                stepEl.innerHTML = this.renderVitaminsStep(step);
-            } else if (step.type === 'training') {
-                stepEl.innerHTML = this.renderTrainingStep(step);
-            } else if (step.type === 'nature') {
-                stepEl.innerHTML = this.renderNatureStep(step);
+            } else if (step.type === 'natures') {
+                stepEl.innerHTML = this.renderNaturesStep(step);
             }
 
             container.appendChild(stepEl);
         });
+    },
+
+    renderPowerItemStep(step, borderColor, priorityLabel) {
+        return `
+            <div class="step-section" style="border-left-color: ${borderColor}">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                    <span class="priority-badge" style="background: ${borderColor};">${priorityLabel}</span>
+                </div>
+                <div class="power-item-detail">
+                    <div class="item-main">
+                        <span class="item-name">${step.powerItem.name}</span>
+                        <span class="item-bonus">+${step.powerItem.evBonus} EVs por combate</span>
+                    </div>
+                    <div class="item-locations">
+                        📍 ${step.powerItem.location}
+                    </div>
+                    <div class="item-price">
+                        💰 ₽${step.powerItem.cost.toLocaleString()}
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderVitaminStep(step, borderColor, priorityLabel) {
+        return `
+            <div class="step-section" style="border-left-color: ${borderColor}">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                    <span class="priority-badge" style="background: ${borderColor};">${priorityLabel}</span>
+                </div>
+                <div class="vitamin-detail">
+                    <div class="vitamin-main">
+                        <span class="vitamin-count">${step.count}x ${step.vitamin.name}</span>
+                        <span class="vitamin-ev">+${step.evTotal} EVs</span>
+                    </div>
+                    <div class="vitamin-location">
+                        📍 Chansey Supply (Mesagoza, Levincia, Cascarrafa)
+                    </div>
+                    <div class="vitamin-price">
+                        💰 ₽${(step.count * step.vitamin.cost).toLocaleString()}
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderBattleStep(step, borderColor, priorityLabel) {
+        return `
+            <div class="step-section" style="border-left-color: ${borderColor}">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                    <span class="priority-badge" style="background: ${borderColor};">${priorityLabel}</span>
+                </div>
+                
+                <div class="battles-summary">
+                    <span class="battles-total">⚔️ ${step.battles} batallas necesarias para ${step.value} EVs</span>
+                </div>
+                
+                <div class="pokemon-grid">
+                    ${step.pokemon.map(p => `
+                        <div class="pokemon-card">
+                            <div class="pokemon-header-row">
+                                <span class="pokemon-name">${p.name}</span>
+                                <span class="pokemon-ev-badge">+${p.evYield} EVs</span>
+                            </div>
+                            <div class="pokemon-details">
+                                <span class="pokemon-battles">⚔️ ${p.battlesNeeded} KOs</span>
+                                <span class="pokemon-total-ev">(${p.totalEvFromPokemon} EVs gained)</span>
+                            </div>
+                            <div class="pokemon-location">📍 ${p.location}</div>
+                            <div class="pokemon-level">📊 ${p.level}</div>
+                            ${p.sandwichName ? `<div class="pokemon-sandwich">🥪 ${p.sandwichName}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                
+                ${step.location ? `
+                    <div class="best-location-info">
+                        <span class="location-title">⭐ Mejor ubicación:</span>
+                        <span class="location-name">${step.location.location}</span>
+                        <span class="location-area">(${step.location.area})</span>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    },
+
+    renderNaturesStep(step) {
+        return `
+            <div class="step-section natures-section">
+                <div class="step-header">
+                    <span class="step-icon">${step.icon}</span>
+                    <span class="step-title">${step.title}</span>
+                </div>
+                <p class="step-description">${step.description}</p>
+                <div class="natures-grid">
+                    ${step.natures.map(nature => `
+                        <div class="nature-option-card">
+                            <div class="nature-header">
+                                <span class="nature-emoji">${nature.icon}</span>
+                                <span class="nature-name">${nature.name}</span>
+                            </div>
+                            <div class="nature-effects">
+                                <span class="positive">↑ ${nature.statPlus}</span>
+                                <span class="negative">↓ ${nature.statMinus}</span>
+                            </div>
+                            <div class="nature-recommended">
+                                <span class="recommended-for">Para: ${nature.recommendedFor}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
     },
 
     renderResetStep(step) {

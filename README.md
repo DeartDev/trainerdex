@@ -2,7 +2,7 @@
 
 Herramienta de entrenamiento competitivo para **Pokémon Scarlet & Violet**. Permite buscar un Pokémon, configurar tus objetivos de EVs y generar un plan de entrenamiento paso a paso con recomendaciones detalladas.
 
-![TrainerDex](https://img.shields.io/badge/Version-2.0.0-blue)
+![TrainerDex](https://img.shields.io/badge/Version-2.1.0-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-CSS3-JS-green)
 ![PokéAPI](https://img.shields.io/badge/Powered-PokéAPI-red)
 
@@ -23,24 +23,102 @@ Herramienta de entrenamiento competitivo para **Pokémon Scarlet & Violet**. Per
 
 ## 🎨 Sistema de Colores
 
+### Tema OSCURO (Dark Mode)
+
+#### Paleta Principal
+| Elemento   | Color       | Uso                          |
+| ---------- | ----------- | ---------------------------- |
+| Primary    | `#60A5FA`   | Botones, enlaces, acciones  |
+| Secondary  | `#FDE047`   | Hover, highlights, selección|
+| Accent     | `#FB7185`   | Alertas, acciones importantes|
+
+#### Neutrales
+| Elemento        | Color      |
+| --------------- | ---------- |
+| Background      | `#0B1120` |
+| Surface         | `#111827` |
+| Elevated Card  | `#1F2937` |
+| Border          | `#334155` |
+
+#### Texto
+| Elemento        | Color      |
+| --------------- | ---------- |
+| Primary text    | `#E5E7EB` |
+| Secondary text  | `#9CA3AF` |
+| Muted           | `#6B7280` |
+
+#### Estados
+| Estado   | Color      |
+| -------- | ---------- |
+| Success  | `#4ADE80` |
+| Warning  | `#FBBF24` |
+| Error    | `#F87171` |
+
+---
+
+### Tema CLARO (Light Mode)
+
+#### Paleta Principal
+| Elemento   | Color       | Uso                          |
+| ---------- | ----------- | ---------------------------- |
+| Primary    | `#3B82F6`   | Botones principales, enlaces|
+| Secondary  | `#FACC15`   | Hover, highlights            |
+| Accent     | `#F43F5E`   | Alertas, acciones importantes|
+
+#### Neutrales
+| Elemento        | Color      |
+| --------------- | ---------- |
+| Background      | `#F8FAFC` |
+| Surface         | `#F1F5F9` |
+| Elevated Card  | `#E2E8F0` |
+| Border          | `#E2E8F0` |
+
+#### Texto
+| Elemento        | Color      |
+| --------------- | ---------- |
+| Primary text    | `#0F172A` |
+| Secondary text  | `#475569` |
+| Muted           | `#94A3B8` |
+
+#### Estados
+| Estado   | Color      |
+| -------- | ---------- |
+| Success  | `#22C55E` |
+| Warning  | `#F59E0B` |
+| Error    | `#EF4444` |
+
+---
+
 ### Colores por Stat
 
-| Stat    | Color (Dark)       | Color (Light) |
-| ------- | ------------------ | ------------- |
-| HP      | Verde `#4ADE80`    | `#22C55E`     |
-| Attack  | Rojo `#F87171`     | `#EF4444`     |
-| Defense | Azul `#60A5FA`     | `#3B82F6`     |
-| Sp. Atk | Amarillo `#FACC15` | `#F59E0B`     |
-| Sp. Def | Púrpura `#A78BFA`  | `#8B5CF6`     |
-| Speed   | Rosa `#FB7185`     | `#F43F5E`     |
+| Stat    | Dark Mode   | Light Mode |
+| ------- | ----------- | ---------- |
+| HP      | `#4ADE80`   | `#22C55E`  |
+| Attack  | `#F87171`   | `#EF4444`  |
+| Defense | `#60A5FA`   | `#3B82F6`  |
+| Sp. Atk | `#FACC15`   | `#F59E0B`  |
+| Sp. Def | `#A78BFA`   | `#8B5CF6`  |
+| Speed   | `#FB7185`   | `#F43F5E`  |
 
-### Paleta Principal
+---
 
-| Elemento          | Dark Mode | Light Mode |
-| ----------------- | --------- | ---------- |
-| Primary (botones) | `#60A5FA` | `#3B82F6`  |
-| Secondary (hover) | `#FDE047` | `#FACC15`  |
-| Accent (alertas)  | `#FB7185` | `#F43F5E`  |
+### Reglas de Uso
+
+**Jerarquía clara:**
+- 1 color dominante → Primary (botones, acciones principales)
+- 1 color de acción → Secondary (hover, selección)
+- 1 color de alerta → Accent (errores, advertencias)
+
+**No mezcles todo o parecerá carnaval.**
+
+**Ejemplo en la app:**
+- Botón "Generar plan" → Primary
+- Stat seleccionado (252 EVs) → Secondary
+- Error EV overflow → Accent
+
+**UX clave:**
+- Cada stat tiene su propio color (verde HP, rojo Attack, etc.)
+- El usuario entiende sin leer
 
 ## 🚀 Uso
 
@@ -116,10 +194,10 @@ trainerdex/
 | Stat    | Berry        | Ubicación                     |
 | ------- | ------------ | ----------------------------- |
 | HP      | Pomeg Berry  | Asado Desert, West Province   |
-| Attack  | Kelpsy Berry | Asado Desert, South Province  |
-| Defense | Qualot Berry | Asado Desert, West Province   |
-| Sp. Atk | Hondew Berry | West Province, Area Zero      |
-| Sp. Def | Grepa Berry  | West Province, Casseroya Lake |
+| Attack  | Kelpsy Berry | Asado Desert, South Province |
+| Defense | Qualot Berry | Asado Desert, West Province  |
+| Sp. Atk | Hondew Berry | West Province, Area Zero     |
+| Sp. Def | Grepa Berry  | West Province, Casseroya Lake|
 | Speed   | Tamato Berry | South Province                |
 
 ### Mentas para Cambiar Naturaleza
@@ -186,4 +264,3 @@ MIT License - Puedes usar, modificar y distribuir este proyecto.
 ---
 
 _Entrena inteligente, vence fácil_ 🏆 - TerWorks - DeartDev
-
